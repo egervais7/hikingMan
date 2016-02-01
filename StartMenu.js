@@ -5,11 +5,14 @@ HikingMan.StartMenu = function(game){
 
 HikingMan.StartMenu.prototype = {
   create: function(){
+
+    var styleFont = {font: "30px Frijole", fill: "#FFFFFF"};
+
     startBG = this.add.image(0, 0, 'titlescreen');
     startBG.inputEnabled = true;
     startBG.events.onInputDown.addOnce(this.startGame, this);
 
-    startPrompt = this.add.bitmapText(this.world-centerX-155, this.world.centerY+180, 'eightbitwonder', 'Click To Start!', 24);
+    startPrompt = this.add.text(this.world.centerX-155, this.world.centerY+180, 'Click To Start!', {font: "30px Frijole", fill: "#FFFFFF"});
   },
 
   startGame : function(pointer) {

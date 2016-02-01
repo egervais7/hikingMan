@@ -3,33 +3,53 @@
   <head>
     <meta charset="utf-8">
     <title>Hiking Man!</title>
+    <link href='http://fonts.googleapis.com/css?family=Frijole' rel='stylesheet' type='text/css'>
     <script src="libs/phaser.js"></script>
-    <script src="Boot.js"></script>
-    <script src="Preloader.js"></script>
-    <script src="StartMenu.js"></script>
     <style media="screen">
       body {
-        padding : 0;
+        padding : 20px;
         margin : 0;
       }
+      .title {
+        margin : 25px;
+        width : 100%;
+        text-align: center;
+      }
       #gameContainer {
-        position: relative;
-        top: 170px;
-        widht: 960px;
+        width: 960px;
         height: 540px;
+      }
+      #controls {
+        position : relative;
+        top : 170px;
+        text-align: center;
       }
     </style>
 
   </head>
   <body>
+    <div class="title"><h1>Hiking Man!</div>
+    <br>
     <div id="gameContainer"></div>
-    <script type="text/javascript">
+    <br>
+    <br>
+    <div id="controls">
+      <h1>Endless hiking! Hike as long as you can!</h1>
+      <h2>Jump over obstacles and animals!<br>Duck under birds!</h2>
+      <h4>
+        <div class="jump"><button type="button" disabled><strong>Jump</strong></button> Up Arrow To Jump</div>
+        <div class="duck"><button type="button" disabled><strong>Duck</strong></button> Down Arrow To Duck</div>
+      </h4>
+    </div>
+    <script src="game.js"></script>
+    <!-- <script type="text/javascript">
       window.onload = function(){
         var game = new Phaser.Game(960, 540, Phaser.AUTO, 'gameContainer');
         game.state.add('Boot', HikingMan.Boot);
         game.state.add('Preloader', HikingMan.Preloader);
+        game.state.add('StartMenu', HikingMan.StartMenu);
         game.state.start('Boot');
       };
-    </script>
+    </script> -->
   </body>
 </html>
