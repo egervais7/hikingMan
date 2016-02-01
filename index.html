@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hiking Man!</title>
+    <script src="libs/phaser.js"></script>
+    <script src="Boot.js"></script>
+    <script src="Preloader.js"></script>
+    <script src="StartMenu.js"></script>
+    <style media="screen">
+      body {
+        padding : 0;
+        margin : 0;
+      }
+      #gameContainer {
+        position: relative;
+        top: 170px;
+        widht: 960px;
+        height: 540px;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div id="gameContainer"></div>
+    <script type="text/javascript">
+      window.onload = function(){
+        var game = new Phaser.Game(960, 540, Phaser.AUTO, 'gameContainer');
+        game.state.add('Boot', HikingMan.Boot);
+        game.state.add('Preloader', HikingMan.Preloader);
+        game.state.start('Boot');
+      };
+    </script>
+  </body>
+</html>
