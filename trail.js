@@ -14,7 +14,7 @@ Trail.prototype = {
   },
   create: function(){
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.game.physics.arcade.gravity.y = 500;
+    this.game.physics.arcade.gravity.y = 700;
 
     this.ground = this.game.add.tileSprite(0,this.game.height-25,this.game.world.width,70,'ground');
     this.game.physics.arcade.enable(this.ground);
@@ -41,6 +41,7 @@ Trail.prototype = {
     this.cloud.checkWorldBounds = true;
     this.cloud.events.onOutOfBounds.add(this.cloudOut, this);
     this.cloud.body.velocity.x = -35;
+
   },
 
   cloudOut: function(cloud){

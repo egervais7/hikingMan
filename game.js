@@ -3,15 +3,14 @@ var game = new Phaser.Game(800, 320, Phaser.AUTO, 'gameContainer');
 var player = null;
 var trail = null;
 var enterKey = null;
-var bird = null;
-var deer = null;
-var fireman = null;
+this.bird = null;
+this.deer = null;
+this.fireman = null;
 
 var boot_state = {
   preload : function() {
     game.load.image('images/country-platform-back');
     game.load.image('progressBar', 'images/textures/health_20.png');
-    this.game.load.atlas('sprites', 'images/hikingManSprites.png', 'images/hikerSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
   },
 
   create: function(){
@@ -51,18 +50,19 @@ var boot_state = {
       player = new Player(game);
       player.preload();
 
-      this.bird.animations.add('fly', ['bird1', 'bird2', 'bird3', 'bird4', 'bird5'], 10, true);
-      this.deer.animations.add('eat', ['deer1', 'deer2', 'deer3', 'deer4', 'deer5'], 10, true);
-      this.fireman.animations.add('burn', ['fireman1', 'fireman2', 'fireman3'], 10, true);
+      // this.game.load.atlas('bird', 'images/hikingManSprites.png', 'images/hikerSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+      // this.deer.animations.add('eat', ['deer1', 'deer2', 'deer3', 'deer4', 'deer5'], 10, true);
+      // this.fireman.animations.add('burn', ['fireman1', 'fireman2', 'fireman3'], 10, true);
     },
     create: function(){
       game.state.start('main');
+      // this.bird.animations.add('fly', ['bird1', 'bird2', 'bird3', 'bird4', 'bird5'], 10, true);
     }
   };
 
   var menu_state = {
     create: function(){
-      var font = {font: "30px Frijole", fill: "#FFFFFF"};
+      var font = {font: "30px Bangers", fill: "#FFFFFF"};
 
       var name = game.add.text(this.game.world.centerX, 150, "Hiking Man!", font);
       var clicker = game.add.text(this.game.world.centerX, 200, "Hit Enter To Start", font);
@@ -83,9 +83,9 @@ var boot_state = {
     create: function(){
       trail.create();
       player.create();
-      bird.create();
-      deer.create();
-      fireman.create();
+      // this.generateBird();
+      // this.generateDeer();
+      // this.generateFireman();
     },
     update: function(){
       trail.update();
@@ -95,7 +95,7 @@ var boot_state = {
 
   var end_game = {
     create: function(){
-      var font = {font: "30px Frijole", fill: "#FFFFFF"};
+      var font = {font: "30px Bangers", fill: "#FFFFFF"};
 
       var done =  game.add.text(this.game.world.centerX, 150, "Game Over!", font);
       var distance = game.add.text(this.game.world.centerX, 250, "You went this far", font);
@@ -113,6 +113,21 @@ var boot_state = {
       }
     },
   };
+
+  // var generateBird = {
+  //   create: function(){
+  //     this.birds = this.game.add.group();
+  //
+  //     this.birds.enableBody = true;
+  //     var numBird = this.game.rnd.integerInRange(1,2);
+  //     var bird;
+  //
+  //     for (var i = 0; i < numBird; i++) {
+  //       var x = this.game.rnd.integerInRange(this.game.width, this.game.world.width - this.game.width);
+  //       bird = this.birds.create(x, this.game.height-115, 'bird');
+  //     }
+  //   },
+  // };
 
   game.state.add('boot', boot_state);
   game.state.add('load', load_state);

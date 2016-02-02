@@ -10,6 +10,7 @@ Player.prototype = {
 
   preload: function(){
     this.game.load.atlas('hiker', 'images/hikingManSprites.png', 'images/hikerSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.image('bigCloud', 'images/cloud.png');
   },
 
   create: function(){
@@ -26,7 +27,20 @@ Player.prototype = {
     this.hiker.anchor.setTo(0.5, 1.0);
 
     this.cursors =  this.game.input.keyboard.createCursorKeys();
+    this.bigCloud = this.game.add.sprite(775, 50, 'bigCloud');
+    this.bigCloud.scale.setTo(1, 1);
+    this.game.physics.enable(this.bigCloud, Phaser.Physics.ARCADE);
+    this.bigCloud.body.allowGravity = false;
+    this.bigCloud.name = 'theFog';
+    this.bigCloud.checkWorldBounds = true;
+    this.bigCloud.events.onOutOfBounds.add(this.bigCloudOut, this);
+    this.bigCloud.body.velocity.x = -5;
 
+  },
+
+  bigCloudOut: function(bigCloud){
+    bigCloud.reset(775, bigCloud.y);
+    bigCloud.body.velocity.x = -205;
   },
 
   update: function(){
