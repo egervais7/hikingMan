@@ -1,15 +1,21 @@
-var game = new Phaser.Game(800, 320, Phaser.AUTO, 'game');
+var game = new Phaser.Game(800, 320, Phaser.AUTO, 'gameContainer');
 
 var player = null;
 var trail = null;
+var enterKey = null;
+var bird = null;
+var deer = null;
+var fireman = null;
 
 var boot_state = {
   preload : function() {
-    game.load.image('progressBarr', 'images/textures/health_20.png');
+    game.load.image('images/country-platform-back');
+    game.load.image('progressBar', 'images/textures/health_20.png');
+    this.game.load.atlas('sprites', 'images/hikingManSprites.png', 'images/hikerSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
   },
 
   create: function(){
-    game.stage.backgroundColor = '#9e9eff';
+    game.stage.backgroundColor = '#83bdfa';
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     if (!game.device.desktop) {
@@ -34,15 +40,20 @@ var boot_state = {
 
   var load_state = {
     preload: function(){
-      player = new Player(game);
-      player.preload();
+
+      var progressBar = game.add.sprite(game.world.centerX, 200, 'progressBar');
+      progressBar.anchor.setTo(0.5, 0.5);
+      game.load.setPreloadSprite(progressBar);
 
       trail = new Trail(game);
       trail.preload();
 
-      var propgressBar = game.add.sprite(game.world.centerX, 200, 'progressBar');
-      progressBar.anchor.setTo(0.5, 0.5);
-      game.load.setPreloadSprite(progressBar);
+      player = new Player(game);
+      player.preload();
+
+      this.bird.animations.add('fly', ['bird1', 'bird2', 'bird3', 'bird4', 'bird5'], 10, true);
+      this.deer.animations.add('eat', ['deer1', 'deer2', 'deer3', 'deer4', 'deer5'], 10, true);
+      this.fireman.animations.add('burn', ['fireman1', 'fireman2', 'fireman3'], 10, true);
     },
     create: function(){
       game.state.start('main');
@@ -59,7 +70,7 @@ var boot_state = {
       name.anchor.setTo(0.5, 0.5);
       clicker.anchor.setTo(0.5, 0.5);
 
-      enterKey = game.input.keyboard.addKet(Phaser.Keyboard.ENTER);
+      enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
       enterKey.onDown.addOnce(gameStart, this);
 
       function gameStart(){
@@ -70,12 +81,15 @@ var boot_state = {
 
   var main_state = {
     create: function(){
-      player.create();
       trail.create();
+      player.create();
+      bird.create();
+      deer.create();
+      fireman.create();
     },
     update: function(){
-      player.update();
       trail.update();
+      player.update();
     }
   };
 

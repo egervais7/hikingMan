@@ -9,52 +9,51 @@ Player = function(game){
 Player.prototype = {
 
   preload: function(){
-    this.game.load.atlas('hiker', 'images/open.png');
+    this.game.load.atlas('hiker', 'images/hikingManSprites.png', 'images/hikerSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
   },
 
   create: function(){
-    this.hiker =  this.game.add.sprite(300, this.game.world.height - 100, 'hiker');
+    this.hiker =  this.game.add.sprite(200, this.game.world.height - 400, 'hiker');
 
-    this.hiker.animations.add('runLeft', Phaser.Animation.generateFrameNames('left', 5, 1), 10, true);
-    this.hiker.animations.add('runRight', Phaser.Animation.generateFrameNames('right', 5, 1), 15, true);
-    this.hiker.animations.add('jumpLeft', Phaser.Animation.generateFrameNames('leftJump', 1, 11), 2, true);
-    this.hiker.animations.add('jumpRight', Phaser.Animation.generateFrameNames('rightJump', 1, 11), 2, true);
+    this.hiker.animations.add('step', ['hiker', 'hikerStep1', 'hikerStep2', 'hikerStep3'], 10, true);
+    this.hiker.animations.add('jump', ['hikerJump1', 'hikerJump2', 'hikerJump3', 'hikerJump4', 'hikerJump5'], 14, true);
+    this.hiker.animations.add('duck', ['hikerDuck1', 'hikerDuck2', 'hikerDuck3'], 14, true);
 
     this.game.camera.follow(this.hiker);
 
-    this.game.physics.enable(this.guy, Phaser.Physics.ARCADE);
+    this.game.physics.enable(this.hiker, Phaser.Physics.ARCADE);
     this.hiker.body.collideWorldBounds = true;
-    this.hiker.anchor.setTo(0.5, 0.5);
+    this.hiker.anchor.setTo(0.5, 1.0);
 
-    this.cursos =  this.game.input.keyboard.createCursorKeys();
+    this.cursors =  this.game.input.keyboard.createCursorKeys();
 
   },
 
   update: function(){
-    this.game.physics.arcade.collide(this.hiker, trail.movingTrail);
+    this.game.physics.arcade.collide(this.hiker, trail.ground);
 
     this.hiker.body.velocity.x = 0;
 
     if (this.cursors.up.isDown && this.hiker.body.touching.down) {
       this.hiker.body.velocity.y = -305;
       this.hiker.animations.stop();
-      this.hiker.frameName = 'rightJump5';
+      this.hiker.frameName = 'hikerJump3';
     } else if (this.cursors.down.isDown && this.hiker.body.touching.down) {
       this.hiker.animations.stop();
-      this.hiker.frameName = 'rightJump8';
-      this.hiker.guy.y += 3.5;
+      this.hiker.frameName = 'hikerDuck3';
+      this.hiker.y += 3.5;
     } else if (this.cursors.left.isDown) {
       this.hiker.body.velocity.x = -150;
-      this.hiker.animations.play('runRight');
+      this.hiker.animations.play('step');
     } else if (this.cursors.right.isDown) {
       this.hiker.body.velocity.x = 150;
-      this.hiker.animations.play('runLeft');
+      this.hiker.animations.play('step');
     } else {
-      this.hiker.animations.play('runRight');
+      this.hiker.animations.play('step');
     }
     if (this.hiker.y < 231){
       this.hiker.animations.stop();
-      this.hiker.frameName = 'rightJump5';
+      this.hiker.frameName = 'hikerJump3';
     }
   }
 };
