@@ -10,11 +10,11 @@ this.fireman = null;
 var boot_state = {
   preload : function() {
     game.load.image('images/country-platform-back');
-    game.load.image('progressBar', 'images/textures/health_20.png');
+    game.load.image('progressBar', 'images/health_20.png');
   },
 
   create: function(){
-    game.stage.backgroundColor = '#83bdfa';
+    game.stage.backgroundColor = '#82b6ff';
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     if (!game.device.desktop) {
