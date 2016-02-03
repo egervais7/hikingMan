@@ -6,14 +6,17 @@ Trail = function(game) {
 
 Trail.prototype = {
   preload: function(){
-    this.game.load.image('ground', 'images/BrickPattern.png');
-    this.game.load.image('mountainsMove', 'images/country-platform-back.png');
-    this.game.load.image('movingTrail', 'images/country-platform.png');
-    this.game.load.atlas('enemy', 'images/theSprites.png', 'images/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.image('ground', 'assets/images/BrickPattern.png');
+    this.game.load.image('mountainsMove', 'assets/images/country-platform-back.png');
+    this.game.load.image('movingTrail', 'assets/images/country-platform.png');
+    this.game.load.atlas('enemy', 'assets/images/theSprites.png', 'assets/images/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
   },
   create: function(){
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 900;
+
+    this.soundTrack = this.game.add.audio('gameSong', 1, true);
+    this.soundTrack.play();
 
     this.ground = this.game.add.tileSprite(0,this.game.height-25,this.game.world.width,70,'ground');
     this.game.physics.arcade.enable(this.ground);
@@ -51,6 +54,10 @@ Trail.prototype = {
   update: function(){
     this.mountainsMove.tilePosition.x -=0.1;
     this.movingTrail.tilePosition.x -=1.5;
+
+    if (gameGlobal.hits === 5) {
+      this.soundTrack.stop();
+    }
   }
 
 };

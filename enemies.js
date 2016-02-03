@@ -8,23 +8,28 @@ Enemy = function(game) {
   this.bunny = null;
   this.deer = null;
   this.wolf = null;
+  this.fire = null;
   this.bigCloud = null;
+  this.birdChirp = null;
+  this.bunnyHop = null;
+  this.growl = null;
+  this.flame = null;
 
 };
 
 Enemy.prototype = {
   preload: function(){
-     this.game.load.atlas('enemy', 'image/theSprites.png', 'image/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
-     this.game.load.image('cloud', 'images/cloud.png');
-     this.game.load.image('pinkUnicorn', 'images/unicorn.png');
+     this.game.load.atlas('enemy', 'assets/image/theSprites.png', 'assets/image/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+     this.game.load.image('cloud', 'assets/images/cloud.png');
+     this.game.load.image('pinkUnicorn', 'assets/images/unicorn.png');
   },
 
   create: function(){
 
-    // stats
-    this.hits = 0;
-    this.points = 0;
-    this.maxHits = 5;
+    // // stats
+    // this.hits = 0;
+    // this.points = 0;
+    // this.maxHits = 5;
 
     // set up stats
     var style1 = { font: "20px Bangers", fill: "#ff0"};
@@ -48,90 +53,56 @@ Enemy.prototype = {
     this.bunny = this.game.add.group();
     this.deer = this.game.add.group();
     this.wolf = this.game.add.group();
+    this.fire = this.game.add.group();
 
     //  set times for all enemies to appear
     this.game.time.events.add(Phaser.Timer.SECOND * 1, this.createStump, this);
     this.game.time.events.add(Phaser.Timer.SECOND * 10, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 18, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 30, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 40, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 50, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 60, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 70, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 80, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 90, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 100, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 110, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 120, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 130, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 140, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 150, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 160, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 170, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 180, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 190, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 200, this.createStump, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 5, this.createBoulder, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 3, this.createBoulder, this);
     this.game.time.events.add(Phaser.Timer.SECOND * 15, this.createBoulder, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 35, this.createBoulder, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 45, this.createBoulder, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 58, this.createBoulder, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 75, this.createBoulder, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 93, this.createBoulder, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 105, this.createBoulder, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 122, this.createBoulder, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 135, this.createBoulder, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 157, this.createBoulder, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 165, this.createBoulder, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 188, this.createBoulder, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 195, this.createBoulder, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 11, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 20, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 42, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 51, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 68, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 72, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 85, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 103, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 124, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 142, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 163, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 189, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 205, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 213, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 230, this.createBunny, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 8, this.createBird, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 23, this.createBird, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 37, this.createBird, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 46, this.createBird, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 65, this.createBird, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 92, this.createBird, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 117, this.createBird, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 138, this.createBird, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 161, this.createBird, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 184, this.createBird, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 14, this.createDeer, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 33, this.createDeer, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 62, this.createDeer, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 93, this.createDeer, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 127, this.createDeer, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 155, this.createDeer, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 176, this.createDeer, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 201, this.createDeer, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 224, this.createDeer, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 240, this.createDeer, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 48, this.createWolf, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 89, this.createWolf, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 122, this.createWolf, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 169, this.createWolf, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 205, this.createWolf, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 235, this.createWolf, this);
-    this.game.time.events.add(Phaser.Timer.SECOND * 255, this.createWolf, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 8, this.createBunny, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 30, this.createBunny, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 60, this.createBunny, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 12, this.createBird, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 30, this.createBird, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 45, this.createBird, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 8, this.createDeer, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 35, this.createDeer, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 70, this.createDeer, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 25, this.createWolf, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 50, this.createWolf, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 80, this.createWolf, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 33, this.createFire, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 66, this.createFire, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 99, this.createFire, this);
     this.game.time.events.add(Phaser.Timer.SECOND * 60, this.createUnicorn, this);
     this.game.time.events.add(Phaser.Timer.SECOND * 120, this.createUnicorn, this);
     this.game.time.events.add(Phaser.Timer.SECOND * 180, this.createUnicorn, this);
     this.game.time.events.add(Phaser.Timer.SECOND * 240, this.createUnicorn, this);
     this.game.time.events.add(Phaser.Timer.SECOND * 300, this.createUnicorn, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 360, this.createUnicorn, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 420, this.createUnicorn, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 480, this.createUnicorn, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 540, this.createUnicorn, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 600, this.createUnicorn, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 660, this.createUnicorn, this);
+
+    // set up audio for animals
+    this.birdChirp = this.game.add.audio('chirp');
+    this.birdChirp.volume = 0.4;
+    this.birdChirp.loop = true;
+
+    this.bunnyHop = this.game.add.audio('hop');
+    this.bunnyHop.volume = 0.2;
+    this.bunnyHop.loop = false;
+
+    this.growl = this.game.add.audio('growl');
+    this.growl.volume = 0.5;
+    this.growl.loop = false;
+
+    this.flame = this.game.add.audio('fire');
+    this.flame.volume = 0.7;
+    this.flame.loop = true;
 
   },
 
@@ -149,10 +120,13 @@ Enemy.prototype = {
     this.bird.body.velocity.x = this.game.rnd.integerInRange(-250, -110);
     this.bird.body.immovable = true;
     this.bird.animations.play('bird');
+    this.birdChirp.play();
 
   },
 
-  birdOut: function(){},
+  birdOut: function(){
+    this.game.time.events.add(Phaser.Timer.SECOND * (this.game.rnd.integerInRange(10, 15)), this.createBird, this);
+  },
 
   createStump: function() {
 
@@ -162,11 +136,17 @@ Enemy.prototype = {
     this.game.physics.enable(this.stump, Phaser.Physics.ARCADE);
     this.stump.body.allowGravity = false;
     this.stump.name = 'Stumpy';
-    this.stump.checkWorldBouds = false;
+    this.stump.collideWorldBounds = false;
+    this.stump.checkWorldBounds = true;
+    this.stump.events.onOutOfBounds.add(this.stumpOut, this);
     this.stump.body.velocity.x = -90;
     this.stump.body.immovable = true;
     this.stump.animations.play('stump');
 
+  },
+
+  stumpOut: function(){
+    this.game.time.events.add(Phaser.Timer.SECOND * (this.game.rnd.integerInRange(1, 4)), this.createStump, this);
   },
 
   createBoulder: function(){
@@ -177,11 +157,17 @@ Enemy.prototype = {
     this.game.physics.enable(this.boulder, Phaser.Physics.ARCADE);
     this.boulder.body.allowGravity = false;
     this.boulder.name = 'Rocky';
-    this.boulder.checkWouldBounds = false;
+    this.boulder.collideWorldBounds = false;
+    this.boulder.checkWorldBounds = true;
+    this.boulder.events.onOutOfBounds.add(this.boulderOut, this);
     this.boulder.body.velocity.x = -90;
     this.boulder.body.immovable = true;
     this.boulder.animations.play('boulder');
 
+  },
+
+  boulderOut: function(){
+    this.game.time.events.add(Phaser.Timer.SECOND * (this.game.rnd.integerInRange(1, 4)), this.createBoulder, this);
   },
 
   createBunny: function() {
@@ -192,27 +178,41 @@ Enemy.prototype = {
     this.game.physics.enable(this.bunny, Phaser.Physics.ARCADE);
     this.bunny.body.allowGravity = false;
     this.bunny.name = 'Thumper';
-    this.bunny.checkWorldBouds = false;
+    this.bunny.collideWorldBouds = false;
+    this.bunny.checkWorldBounds = true;
+    this.bunny.events.onOutOfBounds.add(this.bunnyOut, this);
     this.bunny.body.velocity.x = this.game.rnd.integerInRange(-250, -110);
     this.bunny.body.immovable = true;
     this.bunny.animations.play('bunny');
+    this.bunnyHop.play();
 
+  },
+
+  bunnyOut: function(){
+    this.game.time.events.add(Phaser.Timer.SECOND * (this.game.rnd.integerInRange(5, 10)), this.createBunny, this);
   },
 
   createDeer: function() {
 
-    this.deer = this.game.add.sprite(766, 250, 'enemy');
+    this.deer = this.game.add.sprite(766, 270, 'enemy');
     this.deer.enableBody = true;
     this.deer.animations.add('deer', ['deer1', 'deer2', 'deer3', 'deer4', 'deer5'], 2, true);
     this.game.physics.enable(this.deer, Phaser.Physics.ARCADE);
     this.deer.body.allowGravity = false;
     this.deer.name = 'Bambi';
-    this.deer.checkWorldBouds = false;
+    this.deer.collideWorldBouds = false;
+    this.deer.checkWorldBounds = true;
+    this.deer.events.onOutOfBounds.add(this.deerOut, this);
     this.deer.body.velocity.x = -90;
     this.deer.body.immovable = true;
     this.deer.animations.play('deer');
 
   },
+
+  deerOut: function(){
+    this.game.time.events.add(Phaser.Timer.SECOND * (this.game.rnd.integerInRange(10, 20)), this.createDeer, this);
+  },
+
 
   createWolf: function() {
 
@@ -222,11 +222,40 @@ Enemy.prototype = {
     this.game.physics.enable(this.wolf, Phaser.Physics.ARCADE);
     this.wolf.body.allowGravity = false;
     this.wolf.name = 'Wolfy';
-    this.wolf.checkWorldBouds = false;
+    this.wolf.collideWorldBouds = false;
+    this.wolf.checkWorldBounds = true;
+    this.wolf.events.onOutOfBounds.add(this.wolfOut, this);
     this.wolf.body.velocity.x = -90;
     this.wolf.body.immovable = true;
     this.wolf.animations.play('wolf');
+    this.growl.play();
 
+  },
+
+  wolfOut: function(){
+    this.game.time.events.add(Phaser.Timer.SECOND * (this.game.rnd.integerInRange(20, 40)), this.createWolf, this);
+  },
+
+  createFire: function() {
+
+    this.fire = this.game.add.sprite(766, 260, 'enemy');
+    this.fire.enableBody = true;
+    this.fire.animations.add('flame', ['fire1', 'fire2', 'fire3'], 5, true);
+    this.game.physics.enable(this.fire, Phaser.Physics.ARCADE);
+    this.fire.body.allowGravity = false;
+    this.fire.name = 'FlameBoy';
+    this.fire.collideWorldBouds = false;
+    this.fire.checkWorldBounds = true;
+    this.fire.events.onOutOfBounds.add(this.fireOut, this);
+    this.fire.body.velocity.x = -90;
+    this.fire.body.immovable = true;
+    this.fire.animations.play('flame');
+    this.flame.play();
+
+  },
+
+  fireOut: function(){
+    this.game.time.events.add(Phaser.Timer.SECOND * (this.game.rnd.integerInRange(20, 40)), this.createFire, this);
   },
 
   createUnicorn: function(){
@@ -242,6 +271,14 @@ Enemy.prototype = {
   },
 
   update: function(){
+    gameGlobal.points += (Phaser.Timer.SECOND / 1000);
+    this.refreshStats();
+    this.game.world.bringToTop(this.stump);
+    this.game.world.bringToTop(this.boulder);
+    this.game.world.bringToTop(this.bunny);
+    this.game.world.bringToTop(this.deer);
+    this.game.world.bringToTop(this.wolf);
+    this.game.world.bringToTop(this.fire);
     this.game.world.bringToTop(this.pinkUnicorn);
 
     this.game.physics.arcade.collide(this.bird, player.hiker, this.birdCollide, null, this);
@@ -250,37 +287,53 @@ Enemy.prototype = {
     this.game.physics.arcade.collide(this.bunny, player.hiker, this.bunnyCollide, null, this);
     this.game.physics.arcade.collide(this.deer, player.hiker, this.deerCollide, null, this);
     this.game.physics.arcade.collide(this.wolf, player.hiker, this.wolfCollide, null, this);
+    this.game.physics.arcade.collide(this.fire, player.hiker, this.fireCollide, null, this);
 
-    if (this.hits >= 5) {
+    if (gameGlobal.hits === 5) {
+      this.birdChirp.stop();
+      this.flame.stop();
       this.game.state.start('end');
     }
   },
 
-  birdCollide: function(){},
+  birdCollide: function(){
+    this.birdChirp.stop();
+  },
   stumpCollide: function(){},
   boulderCollide: function(){},
   bunnyCollide: function(enemy, player){
     enemy.destroy();
-    this.hits++;
-    this.points += 5;
+    gameGlobal.hits++;
+    gameGlobal.points += 5;
     this.refreshStats();
+    this.game.time.events.add(Phaser.Timer.SECOND * (this.game.rnd.integerInRange(7, 12)), this.createBunny, this);
   },
   deerCollide: function(enemy, player){
     enemy.destroy();
-    this.hits++;
-    this.points += 5;
+    gameGlobal.hits++;
+    gameGlobal.points += 5;
     this.refreshStats();
+    this.game.time.events.add(Phaser.Timer.SECOND * (this.game.rnd.integerInRange(10, 15)), this.createDeer, this);
   },
   wolfCollide: function(enemy, player){
     enemy.destroy();
-    this.hits++;
-    this.points += 5;
+    gameGlobal.hits++;
+    gameGlobal.points += 5;
     this.refreshStats();
+    this.game.time.events.add(Phaser.Timer.SECOND * (this.game.rnd.integerInRange(20, 30)), this.createWolf, this);
+  },
+  fireCollide: function(enemy, player){
+    enemy.destroy();
+    this.flame.stop();
+    gameGlobal.hits++;
+    gameGlobal.points += 5;
+    this.refreshStats();
+    this.game.time.events.add(Phaser.Timer.SECOND * (this.game.rnd.integerInRange(20, 30)), this.createFire, this);
   },
   refreshStats: function(){
 
     // called this to update stats
-    this.pointsText.text = this.points;
-    this.hitsText.text = this.maxHits - this.hits;
+    this.pointsText.text = gameGlobal.points;
+    this.hitsText.text = gameGlobal.maxHits - gameGlobal.hits;
   },
 };

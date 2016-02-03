@@ -3,13 +3,15 @@ Player = function(game){
   this.group = null;
   this.hiker = null;
   this.cursors = null;
+  this.playerJump = null;
+  this.shuffle = null;
 };
 
 Player.prototype = {
 
   preload: function(){
-    this.game.load.atlas('hiker', 'images/theSprites.png', 'images/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
-    this.game.load.image('bigCloud', 'images/cloud.png');
+    this.game.load.atlas('hiker', 'assets/images/theSprites.png', 'assets/images/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+
   },
 
   create: function(){
@@ -27,6 +29,14 @@ Player.prototype = {
 
     this.cursors =  this.game.input.keyboard.createCursorKeys();
 
+    this.playerJump = this.game.add.audio('jump');
+    this.playerJump.volume = 0.2;
+    this.playerJump.loop = false;
+
+    this.shuffle = this.game.add.audio('shuffles');
+    this.shuffle.volume = 0.4;
+    this.shuffle.loop = true;
+
   },
 
   update: function(){
@@ -37,6 +47,7 @@ Player.prototype = {
     if (this.cursors.up.isDown && this.hiker.body.touching.down) {
       this.hiker.body.velocity.y = -305;
       this.hiker.animations.stop();
+      this.playerJump.play();
       this.hiker.frameName = 'jump1';
     } else if (this.cursors.down.isDown && this.hiker.body.touching.down) {
       this.hiker.animations.stop();
@@ -45,11 +56,14 @@ Player.prototype = {
     } else if (this.cursors.left.isDown) {
       this.hiker.body.velocity.x = -150;
       this.hiker.animations.play('step');
+      this.shuffle.play();
     } else if (this.cursors.right.isDown) {
       this.hiker.body.velocity.x = 150;
       this.hiker.animations.play('step');
+      this.shuffle.play();
     } else {
       this.hiker.animations.play('step');
+      this.shuffle.play();
     }
     if (this.hiker.y < 231){
       this.hiker.animations.stop();

@@ -3,12 +3,19 @@ var game = new Phaser.Game(800, 320, Phaser.AUTO, 'gameContainer');
 var player = null;
 var trail = null;
 var enterKey = null;
+var music = null;
+
+var gameGlobal = {
+  points  : 0,
+  hits    : 0,
+  maxHits : 5
+};
 
 var boot_state = {
   preload : function() {
     // load images for load bar and background
-    game.load.image('images/country-platform-back');
-    game.load.image('progressBar', 'images/health_20.png');
+    game.load.image('assets/images/country-platform-back');
+    game.load.image('progressBar', 'assets/images/health_20.png');
   },
 
   create: function(){
@@ -57,6 +64,14 @@ var boot_state = {
       enemy = new Enemy(game);
       enemy.preload();
 
+      game.load.audio('gameSong', ['assets/audio/gameSong.ogg', 'assets/audio/gameSong.mp3']);
+      game.load.audio('jump', ['assets/audio/playerJump.ogg', 'assets/audio/playerJump.mp3']);
+      game.load.audio('shuffles', ['assets/audio/shuffling.ogg', 'assets/audio/shuffling.mp3']);
+      game.load.audio('chirp', ['assets/audio/birdChirp.ogg', 'assets/audio/birdChirp.mp3']);
+      game.load.audio('hop', ['assets/audio/bunnyHop.ogg', 'assets/audio/bunnyHop.mp3']);
+      game.load.audio('growl', ['assets/audio/growl.ogg', 'assets/audio/growl.mp3']);
+      game.load.audio('fire', ['assets/audio/fire.ogg', 'assets/audio/fire.mp3']);
+
     },
     create: function(){
       game.state.start('main');
@@ -96,7 +111,6 @@ var boot_state = {
     },
     update: function(){
 
-      // this.game.physics.arcade.collide(this.player, this.enemy, this.playerBit, null, this);
 
       // updates trail, player and enemy
       trail.update();
@@ -109,14 +123,16 @@ var boot_state = {
   var end_game = {
     create: function(){
 
-      var font1 = { font: "30px Bangers", fill: "#FFFFFF" };
+      var font1 = { font: "40px Bangers", fill: "#FFFFFF" };
+      var font2 = { font: "40px Bangers", fill: "#FF0000" };
+      var font3 = { font: "60px Bangers", fill: "#32cd32" };
 
       // sets up screen for when game ends
-      var done =  game.add.text(this.game.world.centerX, 150, "Game Over!", font1);
-      var distance = game.add.text(this.game.world.centerX, 250, "Your Points : ", font1);
-      var restart = game.add.text(this.game.world.centerX, 200, "Hit Enter to Start Again!", font1);
+      var done =  game.add.text(this.game.world.centerX, 75, "Game Over! ", font1);
+      var distance = game.add.text(this.game.world.centerX, 185, "Your Points : ", font1);
+      var restart = game.add.text(this.game.world.centerX, 125, "Hit Enter to Start Again! ", font3);
 
-      // this.pointsText = this.game.add.text(80, 20, "", font1);
+      this.pointsText = this.game.add.text(this.game.world.centerX - 45, 205, gameGlobal.points + " ", font2);
 
       done.anchor.setTo(0.5, 0.5);
       distance.anchor.setTo(0.5, 0.5);
@@ -129,6 +145,7 @@ var boot_state = {
         game.state.start('load');
       }
     },
+
   };
 
   game.state.add('boot', boot_state);
