@@ -13,7 +13,7 @@ Trail.prototype = {
   },
   create: function(){
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.game.physics.arcade.gravity.y = 650;
+    this.game.physics.arcade.gravity.y = 900;
 
     this.ground = this.game.add.tileSprite(0,this.game.height-25,this.game.world.width,70,'ground');
     this.game.physics.arcade.enable(this.ground);
