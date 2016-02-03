@@ -21,6 +21,25 @@ Enemy.prototype = {
 
   create: function(){
 
+    // stats
+    this.hits = 0;
+    this.points = 0;
+    this.maxHits = 5;
+
+    // set up stats
+    var style1 = { font: "20px Bangers", fill: "#ff0"};
+    var t1 = this.game.add.text(10, 20, "Points:", style1);
+    var t2 = this.game.add.text(10, 45, "Remaining Hits:", style1);
+    t1.fixedToCamera = true;
+    t2.fixedToCamera = true;
+
+    var style2 = { font: "20px Bangers", fill: "rgb(165, 15, 172)"};
+    this.pointsText = this.game.add.text(80, 20, "", style2);
+    this.hitsText = this.game.add.text(130, 45, "", style2);
+    this.refreshStats();
+    this.pointsText.fixedToCamera = true;
+    this.hitsText.fixedToCamera = true;
+
     // add all the enemies
     this.pinkUnicorn = this.game.add.group();
     this.bird = this.game.add.group();
@@ -125,11 +144,15 @@ Enemy.prototype = {
     this.bird.body.allowGravity = false;
     this.bird.name = 'Gull';
     this.bird.collideWorldBounds = false;
+    this.bird.checkWorldBounds = true;
+    this.bird.events.onOutOfBounds.add(this.birdOut, this);
     this.bird.body.velocity.x = this.game.rnd.integerInRange(-250, -110);
     this.bird.body.immovable = true;
     this.bird.animations.play('bird');
 
   },
+
+  birdOut: function(){},
 
   createStump: function() {
 
@@ -212,7 +235,7 @@ Enemy.prototype = {
     this.pinkUnicorn.scale.setTo(1, 1);
     this.game.physics.enable(this.pinkUnicorn, Phaser.Physics.ARCADE);
     this.pinkUnicorn.body.allowGravity = false;
-    this.pinkUnicorn.name = 'theFog';
+    this.pinkUnicorn.name = 'Pinky';
     this.pinkUnicorn.checkWorldBounds = true;
     this.pinkUnicorn.body.velocity.x = -90;
 
@@ -220,5 +243,44 @@ Enemy.prototype = {
 
   update: function(){
     this.game.world.bringToTop(this.pinkUnicorn);
-  }
+
+    this.game.physics.arcade.collide(this.bird, player.hiker, this.birdCollide, null, this);
+    this.game.physics.arcade.collide(this.stump, player.hiker, this.stumpCollide, null, this);
+    this.game.physics.arcade.collide(this.boulder, player.hiker, this.boulderCollide, null, this);
+    this.game.physics.arcade.collide(this.bunny, player.hiker, this.bunnyCollide, null, this);
+    this.game.physics.arcade.collide(this.deer, player.hiker, this.deerCollide, null, this);
+    this.game.physics.arcade.collide(this.wolf, player.hiker, this.wolfCollide, null, this);
+
+    if (this.hits >= 5) {
+      this.game.state.start('end');
+    }
+  },
+
+  birdCollide: function(){},
+  stumpCollide: function(){},
+  boulderCollide: function(){},
+  bunnyCollide: function(enemy, player){
+    enemy.destroy();
+    this.hits++;
+    this.points += 5;
+    this.refreshStats();
+  },
+  deerCollide: function(enemy, player){
+    enemy.destroy();
+    this.hits++;
+    this.points += 5;
+    this.refreshStats();
+  },
+  wolfCollide: function(enemy, player){
+    enemy.destroy();
+    this.hits++;
+    this.points += 5;
+    this.refreshStats();
+  },
+  refreshStats: function(){
+
+    // called this to update stats
+    this.pointsText.text = this.points;
+    this.hitsText.text = this.maxHits - this.hits;
+  },
 };

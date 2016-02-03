@@ -93,25 +93,6 @@ var boot_state = {
       player.create();
       enemy.create();
 
-      // stats
-      this.hits = 0;
-      this.points = 0;
-      this.maxHits = 5;
-
-      // set up stats
-      var style1 = { font: "20px Bangers", fill: "#ff0"};
-      var t1 = this.game.add.text(10, 20, "Points:", style1);
-      var t2 = this.game.add.text(10, 45, "Remaining Hits:", style1);
-      t1.fixedToCamera = true;
-      t2.fixedToCamera = true;
-
-      var style2 = { font: "20px Bangers", fill: "rgb(165, 15, 172)"};
-      this.pointsText = this.game.add.text(80, 20, "", style2);
-      this.hitsText = this.game.add.text(130, 45, "", style2);
-      this.refreshStats();
-      this.pointsText.fixedToCamera = true;
-      this.hitsText.fixedToCamera = true;
-
     },
     update: function(){
 
@@ -123,19 +104,6 @@ var boot_state = {
       enemy.update();
 
     },
-    refreshStats: function(){
-
-      // called this to update stats
-      this.pointsText.text = this.points;
-      this.hitsText.text = this.maxHits - this.hits;
-
-    },
-    playerBit: function(){
-
-      // update stats
-      this.maxHits++;
-      this.refreshStats();
-    },
   };
 
   var end_game = {
@@ -145,14 +113,16 @@ var boot_state = {
 
       // sets up screen for when game ends
       var done =  game.add.text(this.game.world.centerX, 150, "Game Over!", font1);
-      var distance = game.add.text(this.game.world.centerX, 250, "You went this far", font1);
+      var distance = game.add.text(this.game.world.centerX, 250, "Your Points : ", font1);
       var restart = game.add.text(this.game.world.centerX, 200, "Hit Enter to Start Again!", font1);
+
+      // this.pointsText = this.game.add.text(80, 20, "", font1);
 
       done.anchor.setTo(0.5, 0.5);
       distance.anchor.setTo(0.5, 0.5);
       restart.anchor.setTo(0.5, 0.5);
 
-      enterKey = game.input.keyboard.addKet(Phaser.Keyboard.ENTER);
+      enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
       enterKey.onDown.addOnce(gameStart, this);
 
       function gameStart(){

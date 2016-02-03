@@ -45,7 +45,7 @@ Trail.prototype = {
 
   cloudOut: function(cloud){
     cloud.reset(775, cloud.y);
-    cloud.body.velocity.x = -105;
+    cloud.body.velocity.x = this.game.rnd.integerInRange(-250, -110);
   },
 
   update: function(){
