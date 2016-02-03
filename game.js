@@ -3,9 +3,6 @@ var game = new Phaser.Game(800, 320, Phaser.AUTO, 'gameContainer');
 var player = null;
 var trail = null;
 var enterKey = null;
-this.bird = null;
-this.deer = null;
-this.fireman = null;
 
 var boot_state = {
   preload : function() {
@@ -50,9 +47,10 @@ var boot_state = {
       player = new Player(game);
       player.preload();
 
-      // this.game.load.atlas('bird', 'images/hikingManSprites.png', 'images/hikerSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
-      // this.deer.animations.add('eat', ['deer1', 'deer2', 'deer3', 'deer4', 'deer5'], 10, true);
-      // this.fireman.animations.add('burn', ['fireman1', 'fireman2', 'fireman3'], 10, true);
+      enemy = new Enemy(game);
+      enemy.preload();
+
+      // this.game.load.atlas('obstacle', 'images/theSprites.png', 'images/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
     },
     create: function(){
       game.state.start('main');
@@ -83,6 +81,7 @@ var boot_state = {
     create: function(){
       trail.create();
       player.create();
+      enemy.create();
       // this.generateBird();
       // this.generateDeer();
       // this.generateFireman();
@@ -90,6 +89,7 @@ var boot_state = {
     update: function(){
       trail.update();
       player.update();
+      enemy.update();
     }
   };
 
@@ -119,12 +119,12 @@ var boot_state = {
   //     this.birds = this.game.add.group();
   //
   //     this.birds.enableBody = true;
-  //     var numBird = this.game.rnd.integerInRange(1,2);
+  //     var numBird = this.game.rnd.integerInRange(1,5);
   //     var bird;
   //
   //     for (var i = 0; i < numBird; i++) {
   //       var x = this.game.rnd.integerInRange(this.game.width, this.game.world.width - this.game.width);
-  //       bird = this.birds.create(x, this.game.height-115, 'bird');
+  //       bird = this.birds.create(x, this.game.height-115, 'obstacle');
   //     }
   //   },
   // };
