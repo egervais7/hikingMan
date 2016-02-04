@@ -3,7 +3,6 @@ var game = new Phaser.Game(800, 320, Phaser.AUTO, 'gameContainer');
 var player = null;
 var trail = null;
 var enterKey = null;
-var music = null;
 
 var gameGlobal = {
   points  : 0,
@@ -71,6 +70,7 @@ var boot_state = {
       game.load.audio('hop', ['assets/audio/bunnyHop.ogg', 'assets/audio/bunnyHop.mp3']);
       game.load.audio('growl', ['assets/audio/growl.ogg', 'assets/audio/growl.mp3']);
       game.load.audio('fire', ['assets/audio/fire.ogg', 'assets/audio/fire.mp3']);
+      game.load.audio('heart', ['assets/audio/Replenish.ogg', 'assets/audio/Replenish.mp3']);
 
     },
     create: function(){
@@ -111,7 +111,6 @@ var boot_state = {
     },
     update: function(){
 
-
       // updates trail, player and enemy
       trail.update();
       player.update();
@@ -142,6 +141,8 @@ var boot_state = {
       enterKey.onDown.addOnce(gameStart, this);
 
       function gameStart(){
+        gameGlobal.points = 0;
+        gameGlobal.hits = 0;
         game.state.start('load');
       }
     },

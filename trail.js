@@ -15,8 +15,11 @@ Trail.prototype = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 900;
 
-    this.soundTrack = this.game.add.audio('gameSong', 1, true);
-    this.soundTrack.play();
+    this.myMusic = this.game.add.audio('gameSong', 1, true);
+
+    if (gameGlobal.hits < 5) {
+      this.myMusic.play();
+    }
 
     this.ground = this.game.add.tileSprite(0,this.game.height-25,this.game.world.width,70,'ground');
     this.game.physics.arcade.enable(this.ground);
@@ -52,12 +55,12 @@ Trail.prototype = {
   },
 
   update: function(){
+  if (gameGlobal.hits === 5) {
+    console.log("stop?");
+     myMusic.pause();
+   }
     this.mountainsMove.tilePosition.x -=0.1;
     this.movingTrail.tilePosition.x -=1.5;
-
-    if (gameGlobal.hits === 5) {
-      this.soundTrack.stop();
-    }
   }
 
 };

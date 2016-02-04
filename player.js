@@ -56,14 +56,11 @@ Player.prototype = {
     } else if (this.cursors.left.isDown) {
       this.hiker.body.velocity.x = -150;
       this.hiker.animations.play('step');
-      this.shuffle.play();
     } else if (this.cursors.right.isDown) {
       this.hiker.body.velocity.x = 150;
       this.hiker.animations.play('step');
-      this.shuffle.play();
     } else {
       this.hiker.animations.play('step');
-      this.shuffle.play();
     }
     if (this.hiker.y < 231){
       this.hiker.animations.stop();
