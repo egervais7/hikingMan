@@ -25,14 +25,20 @@ Enemy.prototype = {
      this.game.load.image('cloud', 'assets/images/cloud.png');
      this.game.load.image('pinkUnicorn', 'assets/images/unicorn.png');
      this.game.load.image('heart', 'assets/images/Heart.png');
+     this.game.load.image('play', 'assets/images/GreenMusic.png');
+     this.game.load.image('mute', 'assets/images/RedMusic.png');
   },
 
   create: function(){
+
+    this.myMusic = this.game.add.audio('gameSong', 1, true);
+    this.myMusic.play();
 
     // set up stats
     var style1 = { font: "20px Bangers", fill: "#ff0"};
     var t1 = this.game.add.text(10, 20, "Points:", style1);
     var t2 = this.game.add.text(10, 45, "Remaining Hits:", style1);
+    var t3 = this.game.add.button(750, 20, 'play', this.muteMusic, this, 2, 1, 0);
     t1.fixedToCamera = true;
     t2.fixedToCamera = true;
 
@@ -72,6 +78,7 @@ Enemy.prototype = {
     this.stump.createMultiple(10, 'enemy');
     this.stump.setAll('anchor.x', 0.5);
     this.stump.setAll('anchor.y', 0.5);
+    this.stump.callAll('body.setSize', 'body', 30, 10, 0, 0);
 
     this.boulder = this.game.add.group();
     this.boulder.enableBody = true;
@@ -79,6 +86,7 @@ Enemy.prototype = {
     this.boulder.createMultiple(10, 'enemy');
     this.boulder.setAll('anchor.x', 0.5);
     this.boulder.setAll('anchor.y', 0.5);
+    this.boulder.callAll('body.setSize', 'body', 23, 23, 0, 0);
 
     this.bunny = this.game.add.group();
     this.bunny.enableBody = true;
@@ -139,6 +147,16 @@ Enemy.prototype = {
 
   },
 
+  muteMusic: function(){
+    if (this.myMusic.paused) {
+      this.myMusic.resume();
+      t3 = this.game.add.button(750, 20, 'play', this.muteMusic, this, 2, 1, 0);
+    } else {
+      this.myMusic.pause();
+      t3 = this.game.add.button(750, 20, 'mute', this.muteMusic, this, 2, 1, 0);
+    }
+  },
+
   update: function(){
     gameGlobal.points += (Phaser.Timer.SECOND / 1000);
     this.refreshStats();
@@ -181,11 +199,11 @@ Enemy.prototype = {
       obstacle.body.immovable = true;
     }
 
-    obstacle.anchor.setTo(0.5, 0.5);
+    obstacle.anchor.setTo(0.5, 0);
     obstacle.checkWorldBounds = true;
     obstacle.body.allowGravity = false;
     obstacle.outOfBoundsKill = true;
-    obstacle.reset(this.game.world.width - 5, 290);
+    obstacle.reset(this.game.world.width - 5, 270);
     obstacle.hasCollided = false;
     obstacle.body.velocity.x = -90;
   },

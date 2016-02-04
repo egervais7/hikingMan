@@ -10,11 +10,13 @@ var gameGlobal = {
   maxHits : 5
 };
 
+
 var boot_state = {
   preload : function() {
     // load images for load bar and background
     game.load.image('assets/images/country-platform-back');
     game.load.image('progressBar', 'assets/images/health_20.png');
+    game.load.image('button', 'assets/images/Leaderboard.png');
   },
 
   create: function(){
@@ -102,7 +104,6 @@ var boot_state = {
 
   var main_state = {
     create: function(){
-
       // creates trail, player and enemy
       trail.create();
       player.create();
@@ -116,22 +117,23 @@ var boot_state = {
       player.update();
       enemy.update();
 
-    },
+    }
   };
 
   var end_game = {
     create: function(){
-
+      this.myMusic = this.game.add.audio('gameSong', 1, true);
+      this.myMusic.isPlaying = false;
       var font1 = { font: "40px Bangers", fill: "#FFFFFF" };
       var font2 = { font: "40px Bangers", fill: "#FF0000" };
-      var font3 = { font: "60px Bangers", fill: "#32cd32" };
+      var font3 = { font: "40px Bangers", fill: "#32cd32" };
 
       // sets up screen for when game ends
-      var done =  game.add.text(this.game.world.centerX, 75, "Game Over! ", font1);
-      var distance = game.add.text(this.game.world.centerX, 185, "Your Points : ", font1);
-      var restart = game.add.text(this.game.world.centerX, 125, "Hit Enter to Start Again! ", font3);
-
-      this.pointsText = this.game.add.text(this.game.world.centerX - 45, 205, gameGlobal.points + " ", font2);
+      var done =  game.add.text(this.game.world.centerX + 20, 65, "Game Over! ", font1);
+      var distance = game.add.text(this.game.world.centerX, 110, "Your Points : ", font1);
+      this.pointsText = this.game.add.text(this.game.world.centerX + 105, 85, gameGlobal.points + " ", font2);
+      var button =  game.add.button(this.game.world.centerX, 140, 'button', clickAction, this, 2, 1, 0);
+      var restart = game.add.text(this.game.world.centerX, 210, "Hit Enter to Start Again! ", font3);
 
       done.anchor.setTo(0.5, 0.5);
       distance.anchor.setTo(0.5, 0.5);
@@ -145,7 +147,11 @@ var boot_state = {
         gameGlobal.hits = 0;
         game.state.start('load');
       }
-    },
+
+      function clickAction(){
+        console.log('clicked');
+      }
+    }
 
   };
 

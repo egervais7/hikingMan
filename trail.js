@@ -15,12 +15,6 @@ Trail.prototype = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 900;
 
-    this.myMusic = this.game.add.audio('gameSong', 1, true);
-
-    if (gameGlobal.hits < 5) {
-      this.myMusic.play();
-    }
-
     this.ground = this.game.add.tileSprite(0,this.game.height-25,this.game.world.width,70,'ground');
     this.game.physics.arcade.enable(this.ground);
     this.ground.body.immovable = true;

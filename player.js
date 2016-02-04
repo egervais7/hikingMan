@@ -26,6 +26,7 @@ Player.prototype = {
     this.game.physics.enable(this.hiker, Phaser.Physics.ARCADE);
     this.hiker.body.collideWorldBounds = true;
     this.hiker.anchor.setTo(0.5, 1.0);
+    this.hiker.body.setSize(20, 30, 0, -10);
 
     this.cursors =  this.game.input.keyboard.createCursorKeys();
 
@@ -66,5 +67,9 @@ Player.prototype = {
       this.hiker.animations.stop();
       this.hiker.frameName = 'jump1';
     }
+  },
+
+  render: function(){
+      this.game.debug.body(this.hiker);
   }
 };
