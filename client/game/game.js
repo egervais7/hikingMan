@@ -1,13 +1,13 @@
-// Meteor.startup(function(){});
-//
-// Meteor.subscribe('scores');
+Meteor.startup(function(){});
+
+Meteor.subscribe('scores');
 
 var game = new Phaser.Game(800, 320, Phaser.AUTO, 'gameContainer');
 
 var player = null;
 var trail = null;
 var enterKey = null;
-
+// create global variables
 var gameGlobal = {
   points  : 0,
   hits    : 0,
@@ -15,8 +15,9 @@ var gameGlobal = {
   music   : null
 };
 
-// Template.game.helpers({
-//   'game': function (){
+Template.game.helpers({
+  // set up meteor helpers
+  'game': function (){
     var boot_state = {
       preload : function() {
         // load images for load bar and background
@@ -97,6 +98,7 @@ var gameGlobal = {
         // set up menu page
         var font2 = { font: "30px Bangers", fill: "#FFFFFF" };
 
+        // add text for menu page
         var name = game.add.text(this.game.world.centerX, 150, "Hiking Man!", font2);
         var clicker = game.add.text(this.game.world.centerX, 200, "Hit Enter To Start", font2);
         name.anchor.setTo(0.5, 0.5);
@@ -135,8 +137,6 @@ var gameGlobal = {
         var font2 = { font: "40px Bangers", fill: "#FF0000" };
         var font3 = { font: "40px Bangers", fill: "#32cd32" };
 
-        gameGlobal.music = this.game.add.audio('jingle', 0.5, true);
-
         // sets up screen for when game ends
         var done =  game.add.text(this.game.world.centerX + 20, 65, "Game Over! ", font1);
         var distance = game.add.text(this.game.world.centerX, 110, "Your Points : ", font1);
@@ -148,23 +148,30 @@ var gameGlobal = {
         distance.anchor.setTo(0.5, 0.5);
         restart.anchor.setTo(0.5, 0.5);
 
+        // listens for enter key to restart game
         enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         enterKey.onDown.addOnce(gameStart, this);
 
+        // resets stats for game to start
         function gameStart(){
           gameGlobal.points = 0;
           gameGlobal.hits = 0;
           game.state.start('load');
         }
 
+        // uses click to add player to top scores
         function clickAction(){
           console.log('clicked');
-          var topScore = prompt("Please Enter Initials", "Example : POC");
+          var topScore = prompt("Please Enter Initials", "NaN");
+          if (topScore) {
+            Meteor.call('insertScore', gameGlobal.points, topScore);
+          }
         }
       }
 
     };
 
+    // adds states and starts the boot state
     game.state.add('boot', boot_state);
     game.state.add('load', load_state);
     game.state.add('menu', menu_state);
@@ -172,5 +179,5 @@ var gameGlobal = {
     game.state.add('end', end_game);
 
     game.state.start('boot');
-//   }
-// });
+  }
+});

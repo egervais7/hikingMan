@@ -2,11 +2,11 @@ Enemy = function(game) {
 
   //call all enemies that will come in game
   this.game = game;
-
 };
 
 Enemy.prototype = {
   preload: function(){
+    // load all images for enemy sprites
      this.game.load.atlas('enemy', 'public/image/theSprites.png', 'public/image/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
      this.game.load.image('cloud', 'public/images/cloud.png');
      this.game.load.image('pinkUnicorn', 'public/images/unicorn.png');
@@ -17,7 +17,7 @@ Enemy.prototype = {
 
   create: function(){
 
-    // set up stats
+    // set up stats to show on the page
     var style1 = { font: "20px Bangers", fill: "#ff0"};
     var t1 = this.game.add.text(10, 20, "Points:", style1);
     var t2 = this.game.add.text(10, 45, "Remaining Hits:", style1);
@@ -25,6 +25,7 @@ Enemy.prototype = {
     t1.fixedToCamera = true;
     t2.fixedToCamera = true;
 
+    // display points count
     var style2 = { font: "20px Bangers", fill: "rgb(165, 15, 172)"};
     this.pointsText = this.game.add.text(80, 20, "", style2);
     this.hitsText = this.game.add.text(130, 45, "", style2);
@@ -119,6 +120,7 @@ Enemy.prototype = {
     this.fire.setAll('anchor.y', 0.5);
     this.fire.callAll('animations.add', 'animations', 'flameboy', ['fire1', 'fire2', 'fire3'], 10, true);
 
+    // set up random timer for spawning of enemies and helpers
     randObs = this.game.rnd.integerInRange(0, 5);
     randEn = this.game.rnd.integerInRange(3, 6);
     randPlane = this.game.rnd.integerInRange(30, 60);
@@ -162,6 +164,7 @@ Enemy.prototype = {
   },
 
   muteMusic: function(){
+    // mutes music with user button click
     if (gameGlobal.music.paused) {
       gameGlobal.music.resume();
       t3 = this.game.add.button(750, 20, 'play', this.muteMusic, this, 2, 1, 0);
@@ -172,9 +175,12 @@ Enemy.prototype = {
   },
 
   update: function(){
+
+    // adds points as time goes on
     gameGlobal.points += (Phaser.Timer.SECOND / 1000);
     this.refreshStats();
 
+    // sets up which sprites are on top versus on bottom
     this.game.world.bringToTop(this.stump);
     this.game.world.bringToTop(this.boulder);
     this.game.world.bringToTop(this.bunny);
@@ -186,6 +192,7 @@ Enemy.prototype = {
     this.game.world.bringToTop(this.heart);
     this.game.world.bringToTop(this.pinkUnicorn);
 
+    // set up collide event with all the different sprites
     this.game.physics.arcade.overlap(this.bird, player.hiker, this.enemyCollide, null, this);
     this.game.physics.arcade.collide(this.stump, player.hiker, this.obstacleCollide, null, this);
     this.game.physics.arcade.collide(this.boulder, player.hiker, this.obstacleCollide, null, this);
@@ -196,6 +203,7 @@ Enemy.prototype = {
     this.game.physics.arcade.overlap(this.heart, player.hiker, this.heartCollide, null, this);
     this.game.physics.arcade.overlap(this.pack, player.hiker, this.heartCollide, null, this);
 
+    // updates for end of game when
     if (gameGlobal.hits === 5) {
       this.hurt.play();
       this.birdChirp.stop();
@@ -205,6 +213,7 @@ Enemy.prototype = {
     }
   },
 
+  // creates either a stump or boulder obstacle that cannot be walked through
   spawnObstacle: function(){
     var type = this.game.rnd.integerInRange(1,2);
 
@@ -227,6 +236,7 @@ Enemy.prototype = {
     obstacle.body.velocity.x = -90;
   },
 
+  // creates an enemy sprite, either bird, bunny, deer, or wolf
   spawnEnemy: function(){
 
     var type = this.game.rnd.integerInRange(1, 5);
@@ -234,7 +244,7 @@ Enemy.prototype = {
     if (type === 1) {
       var enemy = this.bird.getFirstExists(false);
       enemy.animations.play('iago');
-      enemy.reset(this.game.world.width - 5, 240);
+      enemy.reset(this.game.world.width - 5, 230);
       enemy.body.velocity.x = this.game.rnd.integerInRange(-250, -90);
       this.birdChirp.play();
     } else if (type === 2) {
@@ -269,6 +279,8 @@ Enemy.prototype = {
     enemy.hasCollided = false;
 
   },
+
+  // creates a heart which gives another life
   spawnHeart: function(){
 
     var life = this.heart.getFirstExists(false);
@@ -282,6 +294,7 @@ Enemy.prototype = {
     life.body.velocity.x = -90;
   },
 
+  // creates a backpack of supplies that adds to life
   spawnPack: function(){
 
     var life = this.pack.getFirstExists(false);
@@ -296,6 +309,7 @@ Enemy.prototype = {
     life.body.velocity.x = -90;
   },
 
+  // creates a plane flying over head for entertainment purposes
   spawnPlane: function(){
 
     var airplane = this.plane.getFirstExists(false);
@@ -311,6 +325,7 @@ Enemy.prototype = {
     this.planeSound.play();
   },
 
+  // creates a giant unicorn head to distract and make play tougher for a moment
   spawnUnicorn: function(){
 
     var unicorn = this.pinkUnicorn.getFirstExists(false);
@@ -321,9 +336,10 @@ Enemy.prototype = {
     unicorn.outOfBoundsKill = true;
     unicorn.reset(this.game.world.width - 5 , 200);
     unicorn.hasCollided = false;
-    unicorn.body.velocity.x = - 75;
+    unicorn.body.velocity.x = -55;
   },
 
+  // function for when player collides with enemy. Plays sounds. Kills enemy. Affects players points and life
   enemyCollide: function(player, enemy){
     if (!enemy.hasCollided) {
       enemy.hasCollided = true;
@@ -334,11 +350,15 @@ Enemy.prototype = {
     gameGlobal.points -= 50;
     this.refreshStats();
   },
+
+  // function for when player runs into obstacle. No damage, but must go over obstacle
   obstacleCollide: function(player, obstacle){
     if (!obstacle.hasCollided) {
       obstacle.hasCollided = true;
     }
   },
+
+  // function for when player hits a heart or backpack. Adds to life and points
   heartCollide:function(player, life){
     if (!life.hasCollided) {
       life.hasCollided = true;
@@ -350,6 +370,7 @@ Enemy.prototype = {
     this.refreshStats();
   },
 
+  // refreshes game stats to keep points accurate
   refreshStats: function(){
 
     // called this to update stats
