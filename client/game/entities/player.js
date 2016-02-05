@@ -11,7 +11,7 @@ Player.prototype = {
 
   preload: function(){
     // preloads hiker animation from sprite sheet
-    this.game.load.atlas('hiker', 'public/images/theSprites.png', 'public/images/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('hiker', 'images/theSprites.png', 'images/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
   },
 
   create: function(){

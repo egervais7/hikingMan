@@ -9,16 +9,16 @@ Trail.prototype = {
   preload: function(){
 
     // loads images for the trail and background
-    this.game.load.image('ground', 'public/images/BrickPattern.png');
-    this.game.load.image('mountainsMove', 'public/images/country-platform-back.png');
-    this.game.load.image('movingTrail', 'public/images/country-platform.png');
-    this.game.load.atlas('enemy', 'public/images/theSprites.png', 'public/images/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.image('ground', 'images/BrickPattern.png');
+    this.game.load.image('mountainsMove', 'images/country-platform-back.png');
+    this.game.load.image('movingTrail', 'images/country-platform.png');
+    this.game.load.atlas('enemy', 'images/theSprites.png', 'images/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
   },
   create: function(){
 
     // sets up global music and plays music
-    gameGlobal.music = this.game.add.audio('gameSong', 0.5, true);
-    gameGlobal.music.play();
+    this.game.gameGlobal.music = this.game.add.audio('gameSong', 0.5, true);
+    this.game.gameGlobal.music.play();
 
     // sets up physics for the game trail
     this.game.physics.startSystem(Phaser.Physics.ARCADE);

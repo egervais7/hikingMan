@@ -7,12 +7,12 @@ Enemy = function(game) {
 Enemy.prototype = {
   preload: function(){
     // load all images for enemy sprites
-     this.game.load.atlas('enemy', 'public/image/theSprites.png', 'public/image/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
-     this.game.load.image('cloud', 'public/images/cloud.png');
-     this.game.load.image('pinkUnicorn', 'public/images/unicorn.png');
-     this.game.load.image('heart', 'public/images/Heart.png');
-     this.game.load.image('play', 'public/images/GreenMusic.png');
-     this.game.load.image('mute', 'public/images/RedMusic.png');
+     this.game.load.atlas('enemy', 'image/theSprites.png', 'image/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+     this.game.load.image('cloud', 'images/cloud.png');
+     this.game.load.image('pinkUnicorn', 'images/unicorn.png');
+     this.game.load.image('heart', 'images/Heart.png');
+     this.game.load.image('play', 'images/GreenMusic.png');
+     this.game.load.image('mute', 'images/RedMusic.png');
   },
 
   create: function(){
@@ -28,7 +28,7 @@ Enemy.prototype = {
     // display points count
     var style2 = { font: "20px Bangers", fill: "rgb(165, 15, 172)"};
     this.pointsText = this.game.add.text(80, 20, "", style2);
-    this.hitsText = this.game.add.text(130, 45, "", style2);
+    this.hitsText = this.game.add.text(160, 45, "", style2);
     this.refreshStats();
     this.pointsText.fixedToCamera = true;
     this.hitsText.fixedToCamera = true;
@@ -165,11 +165,11 @@ Enemy.prototype = {
 
   muteMusic: function(){
     // mutes music with user button click
-    if (gameGlobal.music.paused) {
-      gameGlobal.music.resume();
+    if (this.game.gameGlobal.music.paused) {
+      this.game.gameGlobal.music.resume();
       t3 = this.game.add.button(750, 20, 'play', this.muteMusic, this, 2, 1, 0);
     } else {
-      gameGlobal.music.pause();
+      this.game.gameGlobal.music.pause();
       t3 = this.game.add.button(750, 20, 'mute', this.muteMusic, this, 2, 1, 0);
     }
   },
@@ -177,7 +177,7 @@ Enemy.prototype = {
   update: function(){
 
     // adds points as time goes on
-    gameGlobal.points += (Phaser.Timer.SECOND / 1000);
+    this.game.gameGlobal.points += (Phaser.Timer.SECOND / 1000);
     this.refreshStats();
 
     // sets up which sprites are on top versus on bottom
@@ -204,11 +204,11 @@ Enemy.prototype = {
     this.game.physics.arcade.overlap(this.pack, player.hiker, this.heartCollide, null, this);
 
     // updates for end of game when
-    if (gameGlobal.hits === 5) {
+    if (this.game.gameGlobal.hits === 5) {
       this.hurt.play();
       this.birdChirp.stop();
       this.flame.stop();
-      gameGlobal.music.stop();
+      this.game.gameGlobal.music.stop();
       this.game.state.start('end');
     }
   },
@@ -346,8 +346,8 @@ Enemy.prototype = {
     }
     this.hurt.play();
     enemy.kill();
-    gameGlobal.hits++;
-    gameGlobal.points -= 50;
+    this.game.gameGlobal.hits++;
+    this.game.gameGlobal.points -= 50;
     this.refreshStats();
   },
 
@@ -365,8 +365,8 @@ Enemy.prototype = {
     }
     life.kill();
     this.heartSound.play();
-    gameGlobal.hits--;
-    gameGlobal.points += 100;
+    this.game.gameGlobal.hits--;
+    this.game.gameGlobal.points += 100;
     this.refreshStats();
   },
 
@@ -374,7 +374,7 @@ Enemy.prototype = {
   refreshStats: function(){
 
     // called this to update stats
-    this.pointsText.text = gameGlobal.points;
-    this.hitsText.text = gameGlobal.maxHits - gameGlobal.hits;
+    this.pointsText.text = this.game.gameGlobal.points;
+    this.hitsText.text = this.game.gameGlobal.maxHits - this.game.gameGlobal.hits;
   },
 };
