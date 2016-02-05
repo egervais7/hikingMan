@@ -6,12 +6,16 @@ Trail = function(game) {
 
 Trail.prototype = {
   preload: function(){
-    this.game.load.image('ground', 'assets/images/BrickPattern.png');
-    this.game.load.image('mountainsMove', 'assets/images/country-platform-back.png');
-    this.game.load.image('movingTrail', 'assets/images/country-platform.png');
-    this.game.load.atlas('enemy', 'assets/images/theSprites.png', 'assets/images/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.image('ground', 'public/images/BrickPattern.png');
+    this.game.load.image('mountainsMove', 'public/images/country-platform-back.png');
+    this.game.load.image('movingTrail', 'public/images/country-platform.png');
+    this.game.load.atlas('enemy', 'public/images/theSprites.png', 'public/images/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
   },
   create: function(){
+
+    gameGlobal.music = this.game.add.audio('gameSong', 0.5, true);
+    gameGlobal.music.play();
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 900;
 
@@ -49,10 +53,7 @@ Trail.prototype = {
   },
 
   update: function(){
-  if (gameGlobal.hits === 5) {
-    console.log("stop?");
-     myMusic.pause();
-   }
+    
     this.mountainsMove.tilePosition.x -=0.1;
     this.movingTrail.tilePosition.x -=1.5;
   }

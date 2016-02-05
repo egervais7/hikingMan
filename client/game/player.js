@@ -10,7 +10,7 @@ Player = function(game){
 Player.prototype = {
 
   preload: function(){
-    this.game.load.atlas('hiker', 'assets/images/theSprites.png', 'assets/images/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('hiker', 'public/images/theSprites.png', 'public/images/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
 
   },
 
@@ -20,6 +20,7 @@ Player.prototype = {
     this.hiker.animations.add('step', ['run1', 'run2', 'run3', 'run4', 'run5', 'run6'], 10, true);
     this.hiker.animations.add('jump', ['jump', 'jump1', 'jump'], 14, true);
     this.hiker.animations.add('duck', ['duck'], 14, true);
+    this.hiker.animations.add('stuck', ['jump'], 14, true);
 
     this.game.camera.follow(this.hiker);
 
@@ -53,6 +54,7 @@ Player.prototype = {
     } else if (this.cursors.down.isDown && this.hiker.body.touching.down) {
       this.hiker.animations.stop();
       this.hiker.frameName = 'duck';
+      this.hiker.body.velocity.x = -90;
       this.hiker.y += 3.5;
     } else if (this.cursors.left.isDown) {
       this.hiker.body.velocity.x = -150;
@@ -60,6 +62,8 @@ Player.prototype = {
     } else if (this.cursors.right.isDown) {
       this.hiker.body.velocity.x = 150;
       this.hiker.animations.play('step');
+    } else if (!this.hiker.body.touching.down){
+      this.hiker.animations.play('stuck');
     } else {
       this.hiker.animations.play('step');
     }

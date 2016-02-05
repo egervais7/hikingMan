@@ -2,37 +2,20 @@ Enemy = function(game) {
 
   //call all enemies that will come in game
   this.game = game;
-  this.bird = null;
-  this.stump = null;
-  this.boulder = null;
-  this.bunny = null;
-  this.deer = null;
-  this.wolf = null;
-  this.fire = null;
-  this.pinkUnicorn = null;
-  this.heart = null;
-  this.bigCloud = null;
-  this.birdChirp = null;
-  this.bunnyHop = null;
-  this.growl = null;
-  this.flame = null;
 
 };
 
 Enemy.prototype = {
   preload: function(){
-     this.game.load.atlas('enemy', 'assets/image/theSprites.png', 'assets/image/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
-     this.game.load.image('cloud', 'assets/images/cloud.png');
-     this.game.load.image('pinkUnicorn', 'assets/images/unicorn.png');
-     this.game.load.image('heart', 'assets/images/Heart.png');
-     this.game.load.image('play', 'assets/images/GreenMusic.png');
-     this.game.load.image('mute', 'assets/images/RedMusic.png');
+     this.game.load.atlas('enemy', 'public/image/theSprites.png', 'public/image/theSprites.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+     this.game.load.image('cloud', 'public/images/cloud.png');
+     this.game.load.image('pinkUnicorn', 'public/images/unicorn.png');
+     this.game.load.image('heart', 'public/images/Heart.png');
+     this.game.load.image('play', 'public/images/GreenMusic.png');
+     this.game.load.image('mute', 'public/images/RedMusic.png');
   },
 
   create: function(){
-
-    this.myMusic = this.game.add.audio('gameSong', 1, true);
-    this.myMusic.play();
 
     // set up stats
     var style1 = { font: "20px Bangers", fill: "#ff0"};
@@ -51,7 +34,7 @@ Enemy.prototype = {
 
     // add all the enemies
     this.pinkUnicorn = this.game.add.group();
-    this.pinkUnicorn.enableBody = false;
+    this.pinkUnicorn.enableBody = true;
     this.pinkUnicorn.physicsBodyType = Phaser.Physics.ARCADE;
     this.pinkUnicorn.createMultiple(3, 'pinkUnicorn');
     this.pinkUnicorn.setAll('anchor.x', 0.5);
@@ -63,6 +46,22 @@ Enemy.prototype = {
     this.heart.createMultiple(3, 'heart');
     this.heart.setAll('anchor.x', 0.5);
     this.heart.setAll('anchor.y', 0.5);
+
+    this.pack = this.game.add.group();
+    this.pack.enableBody = true;
+    this.pack.physicsBodyType = Phaser.Physics.ARCADE;
+    this.pack.createMultiple(3, 'enemy');
+    this.pack.setAll('anchor.x', 0.5);
+    this.pack.setAll('anchor.y', 0.5);
+    this.pack.callAll('body.setSize', 'body', 30, 10, 0, 0);
+
+    this.plane = this.game.add.group();
+    this.plane.enableBody = true;
+    this.plane.physicsBodyType = Phaser.Physics.ARCADE;
+    this.plane.createMultiple(5, 'enemy');
+    this.plane.setAll('anchor.x', 0.5);
+    this.plane.setAll('anchor.y', 0.5);
+    this.plane.callAll('animations.add', 'animations', 'theJet', ['plane1', 'plane2', 'plane3', 'plane4', 'plane5'], 10, true);
 
     this.bird = this.game.add.group();
     this.bird.enableBody = true;
@@ -120,9 +119,16 @@ Enemy.prototype = {
     this.fire.setAll('anchor.y', 0.5);
     this.fire.callAll('animations.add', 'animations', 'flameboy', ['fire1', 'fire2', 'fire3'], 10, true);
 
-    this.game.time.events.loop(Phaser.Timer.SECOND * 4, this.spawnObstacle, this);
-    this.game.time.events.loop(Phaser.Timer.SECOND * 6, this.spawnEnemy, this);
-    this.game.time.events.loop(Phaser.Timer.SECOND * 40, this.spawnHeart, this);
+    randObs = this.game.rnd.integerInRange(0, 5);
+    randEn = this.game.rnd.integerInRange(3, 6);
+    randPlane = this.game.rnd.integerInRange(30, 60);
+
+    this.game.time.events.loop(Phaser.Timer.SECOND * randObs, this.spawnObstacle, this);
+    this.game.time.events.loop(Phaser.Timer.SECOND * randEn, this.spawnEnemy, this);
+    this.game.time.events.loop(Phaser.Timer.SECOND * 90, this.spawnHeart, this);
+    this.game.time.events.loop(Phaser.Timer.SECOND * 60, this.spawnPack, this);
+    this.game.time.events.loop(Phaser.Timer.SECOND * randPlane, this.spawnPlane, this);
+    this.game.time.events.loop(Phaser.Timer.SECOND * 75, this.spawnUnicorn, this);
 
     // set up audio for animals
     this.birdChirp = this.game.add.audio('chirp');
@@ -145,14 +151,22 @@ Enemy.prototype = {
     this.heartSound.volume = 1.5;
     this.heartSound.loop = false;
 
+    this.hurt = this.game.add.audio('hit');
+    this.hurt.volume = 1.0;
+    this.hurt.loop = false;
+
+    this.planeSound = this.game.add.audio('jet');
+    this.planeSound.volume = 1.5;
+    this.planeSound.loop = false;
+
   },
 
   muteMusic: function(){
-    if (this.myMusic.paused) {
-      this.myMusic.resume();
+    if (gameGlobal.music.paused) {
+      gameGlobal.music.resume();
       t3 = this.game.add.button(750, 20, 'play', this.muteMusic, this, 2, 1, 0);
     } else {
-      this.myMusic.pause();
+      gameGlobal.music.pause();
       t3 = this.game.add.button(750, 20, 'mute', this.muteMusic, this, 2, 1, 0);
     }
   },
@@ -167,8 +181,10 @@ Enemy.prototype = {
     this.game.world.bringToTop(this.deer);
     this.game.world.bringToTop(this.wolf);
     this.game.world.bringToTop(this.fire);
-    this.game.world.bringToTop(this.pinkUnicorn);
+    this.game.world.bringToTop(this.plane);
+    this.game.world.bringToTop(this.pack);
     this.game.world.bringToTop(this.heart);
+    this.game.world.bringToTop(this.pinkUnicorn);
 
     this.game.physics.arcade.overlap(this.bird, player.hiker, this.enemyCollide, null, this);
     this.game.physics.arcade.collide(this.stump, player.hiker, this.obstacleCollide, null, this);
@@ -178,10 +194,13 @@ Enemy.prototype = {
     this.game.physics.arcade.overlap(this.wolf, player.hiker, this.enemyCollide, null, this);
     this.game.physics.arcade.overlap(this.fire, player.hiker, this.enemyCollide, null, this);
     this.game.physics.arcade.overlap(this.heart, player.hiker, this.heartCollide, null, this);
+    this.game.physics.arcade.overlap(this.pack, player.hiker, this.heartCollide, null, this);
 
     if (gameGlobal.hits === 5) {
+      this.hurt.play();
       this.birdChirp.stop();
       this.flame.stop();
+      gameGlobal.music.stop();
       this.game.state.start('end');
     }
   },
@@ -258,17 +277,61 @@ Enemy.prototype = {
     life.checkWorldBounds = true;
     life.body.allowGravity = false;
     life.outOfBoundsKill = true;
-    life.reset(this.game.world.width - 5, 200);
+    life.reset(this.game.world.width - 5, 190);
     life.hasCollided = false;
     life.body.velocity.x = -90;
   },
+
+  spawnPack: function(){
+
+    var life = this.pack.getFirstExists(false);
+
+    life.frameName = "backpack";
+    life.anchor.setTo(0.5, 0.5);
+    life.checkWorldBounds = true;
+    life.body.allowGravity = false;
+    life.outOfBoundsKill = true;
+    life.reset(this.game.world.width - 5, 290);
+    life.hasCollided = false;
+    life.body.velocity.x = -90;
+  },
+
+  spawnPlane: function(){
+
+    var airplane = this.plane.getFirstExists(false);
+
+    airplane.anchor.setTo(0.5, 0.5);
+    airplane.checkWorldBounds = true;
+    airplane.body.allowGravity = false;
+    airplane.outOfBoundsKill = true;
+    airplane.reset(5, 50);
+    airplane.hasCollided = false;
+    airplane.body.velocity.x = 500;
+    airplane.animations.play('theJet');
+    this.planeSound.play();
+  },
+
+  spawnUnicorn: function(){
+
+    var unicorn = this.pinkUnicorn.getFirstExists(false);
+
+    unicorn.anchor.setTo(0.5, 0.5);
+    unicorn.checkWorldBounds = true;
+    unicorn.body.allowGravity = false;
+    unicorn.outOfBoundsKill = true;
+    unicorn.reset(this.game.world.width - 5 , 200);
+    unicorn.hasCollided = false;
+    unicorn.body.velocity.x = - 75;
+  },
+
   enemyCollide: function(player, enemy){
     if (!enemy.hasCollided) {
       enemy.hasCollided = true;
     }
+    this.hurt.play();
     enemy.kill();
     gameGlobal.hits++;
-    gameGlobal.points += 5;
+    gameGlobal.points -= 50;
     this.refreshStats();
   },
   obstacleCollide: function(player, obstacle){
@@ -281,8 +344,9 @@ Enemy.prototype = {
       life.hasCollided = true;
     }
     life.kill();
+    this.heartSound.play();
     gameGlobal.hits--;
-    gameGlobal.points += 25;
+    gameGlobal.points += 100;
     this.refreshStats();
   },
 
