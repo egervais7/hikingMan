@@ -11,13 +11,14 @@ Enemy.prototype = {
      this.game.load.image('cloud', 'images/cloud.png');
      this.game.load.image('pinkUnicorn', 'images/unicorn.png');
      this.game.load.image('heart', 'images/Heart.png');
+     this.game.load.image('shrub', 'images/shrub.png');
      this.game.load.image('play', 'images/GreenMusic.png');
      this.game.load.image('mute', 'images/RedMusic.png');
   },
 
   create: function(){
 
-    // set up stats to show on the page
+    // set up stats to show on the page and a mute button
     var style1 = { font: "20px Bangers", fill: "#ff0"};
     var t1 = this.game.add.text(10, 20, "Points:", style1);
     var t2 = this.game.add.text(10, 45, "Remaining Hits:", style1);
@@ -25,7 +26,7 @@ Enemy.prototype = {
     t1.fixedToCamera = true;
     t2.fixedToCamera = true;
 
-    // display points count
+    // display points count and refresh those stats
     var style2 = { font: "20px Bangers", fill: "rgb(165, 15, 172)"};
     this.pointsText = this.game.add.text(80, 20, "", style2);
     this.hitsText = this.game.add.text(160, 45, "", style2);
@@ -33,25 +34,25 @@ Enemy.prototype = {
     this.pointsText.fixedToCamera = true;
     this.hitsText.fixedToCamera = true;
 
-    // add all the enemies
+    // add all the enemies, obstacles, distractions and bonuses
     this.pinkUnicorn = this.game.add.group();
     this.pinkUnicorn.enableBody = true;
     this.pinkUnicorn.physicsBodyType = Phaser.Physics.ARCADE;
-    this.pinkUnicorn.createMultiple(3, 'pinkUnicorn');
+    this.pinkUnicorn.createMultiple(5, 'pinkUnicorn');
     this.pinkUnicorn.setAll('anchor.x', 0.5);
     this.pinkUnicorn.setAll('anchor.y', 0.5);
 
     this.heart = this.game.add.group();
     this.heart.enableBody = true;
     this.heart.physicsBodyType = Phaser.Physics.ARCADE;
-    this.heart.createMultiple(3, 'heart');
+    this.heart.createMultiple(5, 'heart');
     this.heart.setAll('anchor.x', 0.5);
     this.heart.setAll('anchor.y', 0.5);
 
     this.pack = this.game.add.group();
     this.pack.enableBody = true;
     this.pack.physicsBodyType = Phaser.Physics.ARCADE;
-    this.pack.createMultiple(3, 'enemy');
+    this.pack.createMultiple(5, 'enemy');
     this.pack.setAll('anchor.x', 0.5);
     this.pack.setAll('anchor.y', 0.5);
     this.pack.callAll('body.setSize', 'body', 30, 10, 0, 0);
@@ -88,6 +89,14 @@ Enemy.prototype = {
     this.boulder.setAll('anchor.y', 0.5);
     this.boulder.callAll('body.setSize', 'body', 23, 23, 0, 0);
 
+    this.bush = this.game.add.group();
+    this.bush.enableBody = true;
+    this.bush.physicsBodyType = Phaser.Physics.ARCADE;
+    this.bush.createMultiple(10, 'shrub');
+    this.bush.setAll('anchor.x', 0.5);
+    this.bush.setAll('anchor.y', 0.5);
+    this.bush.callAll('body.setSize', 'body', 23, 23, 0, 0);
+
     this.bunny = this.game.add.group();
     this.bunny.enableBody = true;
     this.bunny.physicsBodyType = Phaser.Physics.ARCADE;
@@ -107,7 +116,7 @@ Enemy.prototype = {
     this.wolf = this.game.add.group();
     this.wolf.enableBody = true;
     this.wolf.physicsBodyType = Phaser.Physics.ARCADE;
-    this.wolf.createMultiple(2, 'enemy');
+    this.wolf.createMultiple(5, 'enemy');
     this.wolf.setAll('anchor.x', 0.5);
     this.wolf.setAll('anchor.y', 0.5);
     this.wolf.callAll('animations.add', 'animations', 'balto', ['wolf1', 'wolf2', 'wolf3', 'wolf4', 'wolf5', 'wolf5', 'wolf5', 'wolf5', 'wolf4', 'wolf3', 'wolf2'], 3, true);
@@ -115,22 +124,38 @@ Enemy.prototype = {
     this.fire = this.game.add.group();
     this.fire.enableBody = true;
     this.fire.physicsBodyType = Phaser.Physics.ARCADE;
-    this.fire.createMultiple(2, 'enemy');
+    this.fire.createMultiple(5, 'enemy');
     this.fire.setAll('anchor.x', 0.5);
     this.fire.setAll('anchor.y', 0.5);
     this.fire.callAll('animations.add', 'animations', 'flameboy', ['fire1', 'fire2', 'fire3'], 10, true);
 
+    this.wasp = this.game.add.group();
+    this.wasp.enableBody = true;
+    this.wasp.physicsBodyType = Phaser.Physics.ARCADE;
+    this.wasp.createMultiple(5, 'enemy');
+    this.wasp.setAll('anchor.x', 0.5);
+    this.wasp.setAll('anchor.y', 0.5);
+    this.wasp.callAll('animations.add', 'animations', 'buzzer', ['wasp1', 'wasp2', 'wasp3', 'wasp4'], 20, true);
+
     // set up random timer for spawning of enemies and helpers
-    randObs = this.game.rnd.integerInRange(0, 5);
-    randEn = this.game.rnd.integerInRange(3, 6);
+    randObs = this.game.rnd.integerInRange(2, 4);
+    randEn = this.game.rnd.integerInRange(3, 5);
     randPlane = this.game.rnd.integerInRange(30, 60);
 
     this.game.time.events.loop(Phaser.Timer.SECOND * randObs, this.spawnObstacle, this);
     this.game.time.events.loop(Phaser.Timer.SECOND * randEn, this.spawnEnemy, this);
-    this.game.time.events.loop(Phaser.Timer.SECOND * 90, this.spawnHeart, this);
-    this.game.time.events.loop(Phaser.Timer.SECOND * 60, this.spawnPack, this);
+    this.game.time.events.loop(Phaser.Timer.SECOND * 94, this.spawnHeart, this);
+    this.game.time.events.loop(Phaser.Timer.SECOND * 63, this.spawnPack, this);
     this.game.time.events.loop(Phaser.Timer.SECOND * randPlane, this.spawnPlane, this);
-    this.game.time.events.loop(Phaser.Timer.SECOND * 75, this.spawnUnicorn, this);
+    this.game.time.events.loop(Phaser.Timer.SECOND * 76, this.spawnUnicorn, this);
+
+    if (this.game.gameGlobal.points === 3000) {
+      this.game.time.events.loop(Phaser.Timer.SECOND * 6, this.spawnObstacle, this);
+    } 
+
+    if (this.game.gameGlobal.points === 6000) {
+      this.game.time.events.loop(Phaser.Timer.SECOND * 7, this.spawnEnemy, this);
+    }
 
     // set up audio for animals
     this.birdChirp = this.game.add.audio('chirp');
@@ -183,6 +208,7 @@ Enemy.prototype = {
     // sets up which sprites are on top versus on bottom
     this.game.world.bringToTop(this.stump);
     this.game.world.bringToTop(this.boulder);
+    this.game.world.bringToTop(this.bush);
     this.game.world.bringToTop(this.bunny);
     this.game.world.bringToTop(this.deer);
     this.game.world.bringToTop(this.wolf);
@@ -196,10 +222,12 @@ Enemy.prototype = {
     this.game.physics.arcade.overlap(this.bird, player.hiker, this.enemyCollide, null, this);
     this.game.physics.arcade.collide(this.stump, player.hiker, this.obstacleCollide, null, this);
     this.game.physics.arcade.collide(this.boulder, player.hiker, this.obstacleCollide, null, this);
+    this.game.physics.arcade.collide(this.bush, player.hiker, this.obstacleCollide, null, this);
     this.game.physics.arcade.overlap(this.bunny, player.hiker, this.enemyCollide, null, this);
     this.game.physics.arcade.overlap(this.deer, player.hiker, this.enemyCollide, null, this);
     this.game.physics.arcade.overlap(this.wolf, player.hiker, this.enemyCollide, null, this);
     this.game.physics.arcade.overlap(this.fire, player.hiker, this.enemyCollide, null, this);
+    this.game.physics.arcade.overlap(this.wasp, player.hiker, this.enemyCollide, null, this);
     this.game.physics.arcade.overlap(this.heart, player.hiker, this.heartCollide, null, this);
     this.game.physics.arcade.overlap(this.pack, player.hiker, this.heartCollide, null, this);
 
@@ -215,7 +243,7 @@ Enemy.prototype = {
 
   // creates either a stump or boulder obstacle that cannot be walked through
   spawnObstacle: function(){
-    var type = this.game.rnd.integerInRange(1,2);
+    var type = this.game.rnd.integerInRange(1,3);
 
     if (type === 1) {
       var obstacle = this.stump.getFirstExists(false);
@@ -224,6 +252,9 @@ Enemy.prototype = {
     } else if (type === 2) {
       var obstacle = this.boulder.getFirstExists(false);
       obstacle.frameName = "boulder";
+      obstacle.body.immovable = true;
+    } else if (type === 3) {
+      var obstacle = this.bush.getFirstExists(false);
       obstacle.body.immovable = true;
     }
 
@@ -239,12 +270,12 @@ Enemy.prototype = {
   // creates an enemy sprite, either bird, bunny, deer, or wolf
   spawnEnemy: function(){
 
-    var type = this.game.rnd.integerInRange(1, 5);
+    var type = this.game.rnd.integerInRange(1, 6);
 
     if (type === 1) {
       var enemy = this.bird.getFirstExists(false);
       enemy.animations.play('iago');
-      enemy.reset(this.game.world.width - 5, 230);
+      enemy.reset(this.game.world.width - 5, 227);
       enemy.body.velocity.x = this.game.rnd.integerInRange(-250, -90);
       this.birdChirp.play();
     } else if (type === 2) {
@@ -270,7 +301,13 @@ Enemy.prototype = {
       enemy.reset(this.game.world.width - 5, 290);
       enemy.body.velocity.x = -90;
       this.flame.play();
+    } else if (type === 6){
+      var enemy = this.wasp.getFirstExists(false);
+      enemy.animations.play('buzzer');
+      enemy.reset(this.game.world.width - 5, 233);
+      enemy.body.velocity.x = this.game.rnd.integerInRange(-250, -90);
     }
+
     enemy.anchor.setTo(0.5, 0.5);
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;
@@ -289,7 +326,7 @@ Enemy.prototype = {
     life.checkWorldBounds = true;
     life.body.allowGravity = false;
     life.outOfBoundsKill = true;
-    life.reset(this.game.world.width - 5, 190);
+    life.reset(this.game.world.width - 5, 200);
     life.hasCollided = false;
     life.body.velocity.x = -90;
   },
@@ -336,7 +373,7 @@ Enemy.prototype = {
     unicorn.outOfBoundsKill = true;
     unicorn.reset(this.game.world.width - 5 , 200);
     unicorn.hasCollided = false;
-    unicorn.body.velocity.x = -55;
+    unicorn.body.velocity.x = -50;
   },
 
   // function for when player collides with enemy. Plays sounds. Kills enemy. Affects players points and life
@@ -349,6 +386,10 @@ Enemy.prototype = {
     this.game.gameGlobal.hits++;
     this.game.gameGlobal.points -= 50;
     this.refreshStats();
+    if ( this.birdChirp || this.flameboy) {
+      this.birdChirp.stop();
+      this.flame.stop();
+    } 
   },
 
   // function for when player runs into obstacle. No damage, but must go over obstacle

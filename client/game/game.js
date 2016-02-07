@@ -6,16 +6,7 @@ Template.leaderboard.helpers({
   }
 });
 
-Meteor.methods({
-  'insertScore': function(newScore, newPlayer){
-    Score.insert({
-      score  : newScore,
-      player : newPlayer
-    });
-  }
-});
-
-var game = new Phaser.Game(800, 320, Phaser.AUTO, 'gameContainer');
+var game = new Phaser.Game(800, 320, Phaser.AUTO, 'game');
 
 var player = null;
 var trail = null;

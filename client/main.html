@@ -1,18 +1,30 @@
 <head>
   <title>Hiking Meteor</title>
+  <link href='https://fonts.googleapis.com/css?family=Bangers' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
-  <div class="gameName">
+  	<div class="gameName">
     <h1>Welcome to Hiking Man!<br><small>How far can you hike??</small></h1>
-  </div>
+  	</div>
 	<div class="container main-container">
-		<h1>Meteor Phaser Game</h1>
-    {{> game}}
+		{{> game}}
 	</div>
-	<div class="container leaderboard-container">
-		<h1>Meteor Phaser Game</h1>
-    {{> leaderboard}}
+	<div class="lowers">
+		<div class="container leaderboard-container">
+			<h1>Top Scores</h1><br><br>
+			{{> leaderboard}}
+		</div>
+		<div class="container controls-container">
+			<h1>Controls</h1>
+		 	<img src="http://i.imgur.com/ITVdIVV.png">
+		 	<h2><strong>UP</strong>: Jump<br>
+		 	<strong>DOWN</strong>: Duck<br>
+		 	<strong>RIGHT</strong>: Run Right<br>
+		 	<strong>LEFT</strong>: Run Left<br><br>
+		 	Jump Over obstacles.<br><br>
+		 	Avoid Hitting Animals, they hurt you.<br><br>
+		 	Grab Hearts and Supply Packs for more life.<br></h2>
+		</div>
 	</div>
-
 </body>

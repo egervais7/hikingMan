@@ -31,8 +31,8 @@ boot_state.prototype = {
       this.game.scale.pageAlignHorizontally = true;
       this.game.scale.pageAlignVertically = true;
 
-      this.game.scale.setScreenSize(true);
     }
+    
     // game start with menu
     this.game.state.start('menu');
   }

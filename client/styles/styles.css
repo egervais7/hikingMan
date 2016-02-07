@@ -1,30 +1,68 @@
 /* CSS declarations go here */
+body {
+	background-color : #ababab;
+	text-align: center;
+	font-family : "Bangers";
+}
 .gameName {
-	
+	text-align : center;
+}
+.gameName h1 {
+	color      : #004f9f;
+	font-size : 40px;
+}
+.gameName small{
+	color      : #9a303f;
 }
 .main-container {
 	text-align: center;
 	margin: 0 auto;
 	max-height: 1000px;
 	max-width: 800px;
+	position: relative;
+	right: 15px;
 }
-
-.leaderboard-container {
-	text-align: justify;
-	margin: 0 auto;
+.lowers {
+	border: 4px solid black;
+	border-radius : 45px;
+	position: relative;
+	top: 30px;
+	left: 232px;
 	max-height: 1000px;
-	max-width: 400px;
+	max-width: 800px;
 }
-
-#game {
-	height: 540px;
-	width: 960px;
+.leaderboard-container {
+	border : 3px solid red;
+	border-radius : 50px;
+	text-align: center;
 	margin: 0 auto;
+	height: 987px;
+	width: 390px;
+	position: relative;
+	top: 3px;
+	right: 197px;
 }
-
+.controls-container {
+	text-align : center;
+	font-family : "Bangers";
+	border : 2px solid green;
+	border-radius: 50px;
+	max-height: 1000px;
+	max-width: 390px;
+	position : relative;
+	top: -984px;
+	left: 197px;
+}
 #leaderboard {
-	height: 800px;
-	width: 300px;
-	margin: 0 auto;
+	text-align : center;
 	overflow: scroll;
+}
+#leaderboard li {
+	font-size : 40px;
+	color : orange;
+}
+.eachScore {
+	border-radius: 30px;
+	border: 2px solid blue;
+	background-color : blue;
 }

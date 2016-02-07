@@ -1,7 +1,9 @@
 <template name="leaderboard">
     <div id="leaderboard">
+		<ol>
 		{{#each scores}}
-    {{player}} : {{score}}
-    {{/each}}
+    		<div class="eachScore"><li>{{player}} : {{score}}</li></div><br>
+    	{{/each}}
+    	</ol>
     </div>
 </template>
