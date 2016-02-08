@@ -71,7 +71,7 @@ Enemy.prototype = {
     this.bird.createMultiple(5, 'enemy');
     this.bird.setAll('anchor.x', 0.5);
     this.bird.setAll('anchor.y', 0.5);
-    this.bird.callAll('animations.add', 'animations', 'iago', ['bird1', 'bird2', 'bird3', 'bird4'], 7, true);
+    this.bird.callAll('animations.add', 'animations', 'iago', ['bird1', 'bird2', 'bird3', 'bird4'], 10, true);
 
     this.stump = this.game.add.group();
     this.stump.enableBody = true;
@@ -111,7 +111,7 @@ Enemy.prototype = {
     this.deer.createMultiple(5, 'enemy');
     this.deer.setAll('anchor.x', 0.5);
     this.deer.setAll('anchor.y', 0.5);
-    this.deer.callAll('animations.add', 'animations', 'bambi', ['deer1', 'deer2', 'deer3', 'deer4', 'deer5'], 2, true);
+    this.deer.callAll('animations.add', 'animations', 'bambi', ['deer1', 'deer2', 'deer3', 'deer4', 'deer5'], 10, true);
 
     this.wolf = this.game.add.group();
     this.wolf.enableBody = true;
@@ -119,7 +119,7 @@ Enemy.prototype = {
     this.wolf.createMultiple(5, 'enemy');
     this.wolf.setAll('anchor.x', 0.5);
     this.wolf.setAll('anchor.y', 0.5);
-    this.wolf.callAll('animations.add', 'animations', 'balto', ['wolf1', 'wolf2', 'wolf3', 'wolf4', 'wolf5', 'wolf5', 'wolf5', 'wolf5', 'wolf4', 'wolf3', 'wolf2'], 3, true);
+    this.wolf.callAll('animations.add', 'animations', 'balto', ['wolf1', 'wolf2', 'wolf3', 'wolf4', 'wolf5', 'wolf5', 'wolf5', 'wolf5', 'wolf4', 'wolf3', 'wolf2'], 5, true);
 
     this.fire = this.game.add.group();
     this.fire.enableBody = true;
@@ -288,7 +288,7 @@ Enemy.prototype = {
       var enemy = this.deer.getFirstExists(false);
       enemy.animations.play('bambi');
       enemy.reset(5, 290);
-      enemy.body.velocity.x = 90;
+      enemy.body.velocity.x = this.game.rnd.integerInRange(100, 150);
     } else if (type === 4) {
       var enemy = this.wolf.getFirstExists(false);
       enemy.animations.play('balto');
