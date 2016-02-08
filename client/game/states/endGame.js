@@ -35,9 +35,16 @@ end_game.prototype = {
       // uses click to add player to top scores
       function clickAction(){
         console.log('clicked');
-        var topScore = prompt("Please Enter Initials", "NaN");
+        var topScore = prompt("Please Enter 3-4 Initials", "NaN");
         if (topScore) {
+          if(topScore.length < 5 && topScore > 2) {
           Meteor.call('insertScore', this.game.gameGlobal.points, topScore);
+          this.game.gameGlobal.points = 0;
+          this.game.gameGlobal.hits = 0;
+          this.game.state.start('menu');
+          } else {
+            clickAction();
+          }
         }
       }
     }
