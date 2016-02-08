@@ -304,8 +304,8 @@ Enemy.prototype = {
     } else if (type === 6){
       var enemy = this.wasp.getFirstExists(false);
       enemy.animations.play('buzzer');
-      enemy.reset(this.game.world.width - 5, 233);
-      enemy.body.velocity.x = this.game.rnd.integerInRange(-250, -90);
+      enemy.reset(5, 233);
+      enemy.body.velocity.x = this.game.rnd.integerInRange(90, 250);
     }
 
     enemy.anchor.setTo(0.5, 0.5);
