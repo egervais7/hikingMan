@@ -1,6 +1,5 @@
 Enemy = function(game) {
-
-  //call all enemies that will come in game
+  // calls game for enemies page
   this.game = game;
 };
 
@@ -35,6 +34,7 @@ Enemy.prototype = {
     this.hitsText.fixedToCamera = true;
 
     // add all the enemies, obstacles, distractions and bonuses
+    // adds them to group, gives them a body, applies physics, creates multiple sprites, sets anchors for sprites
     this.pinkUnicorn = this.game.add.group();
     this.pinkUnicorn.enableBody = true;
     this.pinkUnicorn.physicsBodyType = Phaser.Physics.ARCADE;
@@ -138,26 +138,31 @@ Enemy.prototype = {
     this.wasp.callAll('animations.add', 'animations', 'buzzer', ['wasp1', 'wasp2', 'wasp3', 'wasp4'], 20, true);
 
     // set up random timer for spawning of enemies and helpers
-    randObs = this.game.rnd.integerInRange(2, 4);
-    randEn = this.game.rnd.integerInRange(3, 5);
+    randObs = this.game.rnd.integerInRange(2, 3);
+    randEn = this.game.rnd.integerInRange(3, 4);
     randPlane = this.game.rnd.integerInRange(30, 60);
 
+    // spawns sprites at random and set intervals
     this.game.time.events.loop(Phaser.Timer.SECOND * randObs, this.spawnObstacle, this);
+    this.game.time.events.loop(Phaser.Timer.SECOND * 50, this.spawnObstacle, this);
     this.game.time.events.loop(Phaser.Timer.SECOND * randEn, this.spawnEnemy, this);
+    this.game.time.events.loop(Phaser.Timer.SECOND * 60, this.spawnEnemy, this);
     this.game.time.events.loop(Phaser.Timer.SECOND * 94, this.spawnHeart, this);
     this.game.time.events.loop(Phaser.Timer.SECOND * 63, this.spawnPack, this);
     this.game.time.events.loop(Phaser.Timer.SECOND * randPlane, this.spawnPlane, this);
     this.game.time.events.loop(Phaser.Timer.SECOND * 76, this.spawnUnicorn, this);
 
     if (this.game.gameGlobal.points === 3000) {
+      console.log("IS this being called?");
       this.game.time.events.loop(Phaser.Timer.SECOND * 6, this.spawnObstacle, this);
     } 
 
     if (this.game.gameGlobal.points === 6000) {
+      console.log("IS this being called? I don't know!");
       this.game.time.events.loop(Phaser.Timer.SECOND * 7, this.spawnEnemy, this);
     }
 
-    // set up audio for animals
+    // set up audio for animals, volumes, and if the sound should loop
     this.birdChirp = this.game.add.audio('chirp');
     this.birdChirp.volume = 1.4;
     this.birdChirp.loop = true;
@@ -191,9 +196,11 @@ Enemy.prototype = {
   muteMusic: function(){
     // mutes music with user button click
     if (this.game.gameGlobal.music.paused) {
+      // resumes the music
       this.game.gameGlobal.music.resume();
       t3 = this.game.add.button(750, 20, 'play', this.muteMusic, this, 2, 1, 0);
     } else {
+      // pauses the music
       this.game.gameGlobal.music.pause();
       t3 = this.game.add.button(750, 20, 'mute', this.muteMusic, this, 2, 1, 0);
     }
@@ -231,7 +238,7 @@ Enemy.prototype = {
     this.game.physics.arcade.overlap(this.heart, player.hiker, this.heartCollide, null, this);
     this.game.physics.arcade.overlap(this.pack, player.hiker, this.heartCollide, null, this);
 
-    // updates for end of game when
+    // updates for end of game when, stops sounds and music, calls the end page
     if (this.game.gameGlobal.hits === 5) {
       this.hurt.play();
       this.birdChirp.stop();
@@ -243,6 +250,7 @@ Enemy.prototype = {
 
   // creates either a stump or boulder obstacle that cannot be walked through
   spawnObstacle: function(){
+    // selects a random number for random obstacle
     var type = this.game.rnd.integerInRange(1,3);
 
     if (type === 1) {
@@ -258,6 +266,7 @@ Enemy.prototype = {
       obstacle.body.immovable = true;
     }
 
+    // applies anchor, and checks world bounds, says where they generate and their speed
     obstacle.anchor.setTo(0.5, 0);
     obstacle.checkWorldBounds = true;
     obstacle.body.allowGravity = false;
@@ -267,11 +276,12 @@ Enemy.prototype = {
     obstacle.body.velocity.x = -90;
   },
 
-  // creates an enemy sprite, either bird, bunny, deer, or wolf
+  // creates an enemy sprite, either bird, bunny, deer, wasp, or wolf
   spawnEnemy: function(){
 
+    // selects a random number for random enemy
     var type = this.game.rnd.integerInRange(1, 6);
-
+    // for each enemy, tells what sound and animation to play as well as where they appear on world
     if (type === 1) {
       var enemy = this.bird.getFirstExists(false);
       enemy.animations.play('iago');
@@ -308,6 +318,7 @@ Enemy.prototype = {
       enemy.body.velocity.x = this.game.rnd.integerInRange(90, 250);
     }
 
+    // sets up body of each enemy sprite
     enemy.anchor.setTo(0.5, 0.5);
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;

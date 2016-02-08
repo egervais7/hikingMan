@@ -19,8 +19,10 @@ menu_state.prototype = {
     enterKey = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
     enterKey.onDown.addOnce(gameStart, this);
 
-    // starts game
+    // starts game and sets points and hits to 0
     function gameStart(){
+      this.game.gameGlobal.points = 0;
+      this.game.gameGlobal.hits = 0;
       this.game.state.start('load');
     }
   }

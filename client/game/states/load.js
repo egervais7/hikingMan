@@ -37,7 +37,7 @@ load_state.prototype = {
 
   },
   create: function(){
-    // load main state
+    // starts the main state of the game
     this.game.state.start('main');
   }
   
