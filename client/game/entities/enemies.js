@@ -287,8 +287,8 @@ Enemy.prototype = {
     } else if (type === 3) {
       var enemy = this.deer.getFirstExists(false);
       enemy.animations.play('bambi');
-      enemy.reset(this.game.world.width - 5, 290);
-      enemy.body.velocity.x = -90;
+      enemy.reset(5, 290);
+      enemy.body.velocity.x = 90;
     } else if (type === 4) {
       var enemy = this.wolf.getFirstExists(false);
       enemy.animations.play('balto');
