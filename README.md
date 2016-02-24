@@ -13,4 +13,4 @@ If you want to make a game with Phaser, go to their repo, <a href="https://githu
 <a href="https://www.meteor.com/">Meteor</a> is a very simple way to create a real time, full Javascript Apps. Go check them out! I used it to give players an option to add their top scores and initials to the database.
 
 <b>WireFrame</b>
-<img src="../../public/images/hikingManWireFrame.JPG">
+<img src="../../../images/hikingManWireFrame.JPG">
