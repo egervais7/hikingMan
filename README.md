@@ -2,7 +2,7 @@
 
 HikingMan is an online game made with Phaser and Meteor. It was built for the final project during General Assemblies Web Development Immersive Program. Go play it <a href="http://hikerman.meteor.com/">here</a>. It may take a moment to load, but see if you can find the Pink Unicorn!
 
-<img src="../../public/images/hikerMan.jpg">
+<img src="../../blob/master/public/images/hikerMan.jpg">
 
 Things that still are to come are increased difficulty over time as well as possibly having the trail go at an upward angle rather than stayig flat the whole time.
 
@@ -13,4 +13,4 @@ If you want to make a game with Phaser, go to their repo, <a href="https://githu
 <a href="https://www.meteor.com/">Meteor</a> is a very simple way to create a real time, full Javascript Apps. Go check them out! I used it to give players an option to add their top scores and initials to the database.
 
 <b>WireFrame</b>
-<img src="../../../images/hikingManWireFrame.JPG">
+<img src="../..blob/master/public/images/hikingManWireFrame.JPG" class="rotate90">
